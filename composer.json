@@ -1,0 +1,27 @@
+{
+    "name": "turbolabit/php-symfony-basecommand",
+    "description": "A minimal Symfony bundle to build your own CLI commands even faster",
+    "autoload": {
+        "psr-4": {
+            "TurboLabIt\\PhpSymfonyBasecommand\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TurboLabIt\\PhpSymfonyBasecommand\\tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Zane"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "require": {
+        "php": "^8.2",
+        "symfony/console": "^6.2",
+        "symfony/lock": "^6.2"
+    }
+}

@@ -7,7 +7,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
 
 
-
 #[AsCommand(name: 'TestInstance82')]
 class BaseCommandTestInstance extends AbstractBaseCommand
 {

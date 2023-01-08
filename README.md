@@ -16,7 +16,7 @@ symfony composer require turbolabit/php-symfony-basecommand:dev-master
 
 ```php
 <?php declare(strict_types=1);
-namespace TurboLabIt\PhpSymfonyBasecommand\tests;
+namespace App\Command;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;

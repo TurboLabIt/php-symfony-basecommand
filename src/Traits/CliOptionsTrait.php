@@ -88,22 +88,47 @@ trait CliOptionsTrait
     }
 
 
-    protected function isNotDryRun() : bool
+    protected function isNotDryRun(bool $silent = false) : bool
     {
-        return !$this->getCliOption(static::CLI_OPT_DRY_RUN);
+        $isDryRun = $this->getCliOption(static::CLI_OPT_DRY_RUN);
+        
+        if( $isDryRun && !$silent ) {
+            $this->fxInfo("🐰 Skipped due to --" . static::CLI_OPT_DRY_RUN);
+        }
+        
+        return !$isDryRun;
     }
 
 
-    protected function isSendingMessageAllowed() : bool
+    protected function isSendingMessageAllowed(bool $silent = false) : bool
     {
-        return !$this->getCliOption(static::CLI_OPT_BLOCK_MESSAGES);
+        $canSend = $this->getCliOption(static::CLI_OPT_BLOCK_MESSAGES);
+        
+        if( !$canSend && !$silent ) {
+            $this->fxInfo("📪 Skipped due to --" . static::CLI_OPT_BLOCK_MESSAGES);
+        }
+        
+        return $canSend;
     }
 
 
-    protected function isIdFilterMatch(int $id) : bool
+    protected function isIdFilterMatch(int $id, bool $silent = false) : bool
     {
-        return 
-            $this->getCliOption(static::CLI_OPT_SINGLE_ID) === null ||
-            $id == $this->getCliOption(static::CLI_OPT_SINGLE_ID);
+        $idOpt = $this->getCliOption(static::CLI_OPT_SINGLE_ID);
+        
+        if( $idOpt === null ) {
+            return true;
+        }
+        
+        if( $id == $idOpt ) {
+            
+            $this->fxInfo("🎯 --" . static::CLI_OPT_SINGLE_ID . "=##$id##: HIT!");
+            return true;
+            
+        } else {
+            
+             $this->fxInfo("🦘 ##$id## skipped due to --" . static::CLI_OPT_SINGLE_ID . "=##$idOpt##");
+            return false;
+        }
     }
 }

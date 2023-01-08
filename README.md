@@ -2,7 +2,9 @@
 
 An extensions of Symfony Console Command to build your own CLI commands even faster.
 
-![image](https://i.postimg.cc/FHBfDbJN/z-Shot-1673219261.png)
+<p align="center">
+  <img src="[http://some_place.com/image.png](https://i.postimg.cc/FHBfDbJN/z-Shot-1673219261.png)" />
+</p>
 
 
 ## 📦 Install it with composer

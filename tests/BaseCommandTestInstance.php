@@ -51,10 +51,6 @@ class BaseCommandTestInstance extends AbstractBaseCommand
 
             file_put_contents( $this->getTestPath(static::FILE_NOT_DRY_RUN_WRITE), "YES");
             $this->fxOK();
-
-        } else {
-
-            $this->fxInfo("Skipped due to --" . static::CLI_OPT_DRY_RUN);
         }
 
         $this->fxTitle("Always sending a message...");
@@ -66,10 +62,6 @@ class BaseCommandTestInstance extends AbstractBaseCommand
 
             file_put_contents( $this->getTestPath(static::FILE_NOT_BLOCK_SEND_MSG), "YES" );
             $this->fxOK();
-
-        } else {
-
-            $this->fxInfo("Skipped due to --" . static::CLI_OPT_BLOCK_MESSAGES);
         }
 
         return

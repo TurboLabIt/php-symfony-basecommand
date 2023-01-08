@@ -102,13 +102,13 @@ trait CliOptionsTrait
 
     protected function isSendingMessageAllowed(bool $silent = false) : bool
     {
-        $canSend = $this->getCliOption(static::CLI_OPT_BLOCK_MESSAGES);
+        $isMessagingBlocked = $this->getCliOption(static::CLI_OPT_BLOCK_MESSAGES);
         
-        if( !$canSend && !$silent ) {
+        if( $isMessagingBlocked && !$silent ) {
             $this->fxInfo("📪 Skipped due to --" . static::CLI_OPT_BLOCK_MESSAGES);
         }
         
-        return $canSend;
+        return !$isMessagingBlocked;
     }
 
 

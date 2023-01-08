@@ -85,13 +85,15 @@ class BashFx
 
     public function fxCatastrophicError(string $message, bool $endFooterAndStop = true) : int
     {
-        $message = "🛑 Catastrophic error 🛑". PHP_EOL . $message;
-        $this->io->block($message, null, 'fg=black;bg=red', ' ', true);
+        $txtCatastrophicError = "🛑 Catastrophic error 🛑";
+        $fullMessage = $txtCatastrophicError . PHP_EOL . $message;
+        $this->io->block($fullMessage, null, 'fg=black;bg=red', ' ', true);
 
         if( $endFooterAndStop) {
 
             $this->fxEndFooter(AbstractBaseCommand::FAILURE);
-            throw new RuntimeException($message);
+            $fullMessage = $txtCatastrophicError . " | " . $message;
+            throw new RuntimeException($fullMessage);
         }
 
         return AbstractBaseCommand::FAILURE;

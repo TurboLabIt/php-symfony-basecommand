@@ -3,7 +3,7 @@
 An extensions of Symfony Console Command to build your own CLI commands even faster.
 
 <p align="center">
-  <img src="[http://some_place.com/image.png](https://i.postimg.cc/FHBfDbJN/z-Shot-1673219261.png)" />
+  <img src="https://i.postimg.cc/FHBfDbJN/z-Shot-1673219261.png" />
 </p>
 
 

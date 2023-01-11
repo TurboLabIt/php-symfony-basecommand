@@ -30,10 +30,10 @@ abstract class AbstractBaseCommand extends Command
     protected SymfonyStyle $io;
 
 
-    public function __construct(BashFx $bashFx, array $arrConfig = [])
+    public function __construct(?BashFx $bashFx = null, array $arrConfig = [])
     {
         parent::__construct();
-        $this->bashFx       = $bashFx;
+        $this->bashFx       = $bashFx ?? (new BashFx());
         $this->arrConfig    = $arrConfig;
     }
 

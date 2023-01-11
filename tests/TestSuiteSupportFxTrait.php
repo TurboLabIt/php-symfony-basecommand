@@ -1,9 +1,7 @@
 <?php declare(strict_types=1);
 namespace TurboLabIt\PhpSymfonyBasecommand\tests;
 
-use TurboLabIt\PhpSymfonyBasecommand\Service\BashFx;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -12,7 +10,7 @@ trait TestSuiteSupportFxTrait
 {
     protected function getCommandInstance() : BaseCommandTestInstance
     {
-        $cmd = new BaseCommandTestInstance( new BashFx() );
+        $cmd = new BaseCommandTestInstance();
         $cmd->setName('TestInstance99');
         return $cmd;
     }

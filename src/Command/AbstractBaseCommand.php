@@ -21,6 +21,7 @@ abstract class AbstractBaseCommand extends Command
 {
     use BashFxDirectTrait;
     use CliOptionsTrait;
+    use CliArgumentsTrait;
     use HeaderFooterTrait;
 
     protected array $arrConfig;

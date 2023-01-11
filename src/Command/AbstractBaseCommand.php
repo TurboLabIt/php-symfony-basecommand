@@ -8,6 +8,7 @@ namespace TurboLabIt\PhpSymfonyBasecommand\Command;
 use Symfony\Component\Console\Command\Command;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\BashFxDirectTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\CliOptionsTrait;
+use TurboLabIt\PhpSymfonyBasecommand\Traits\CliArgumentsTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\HeaderFooterTrait;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;

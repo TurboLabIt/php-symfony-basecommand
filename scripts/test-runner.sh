@@ -21,6 +21,7 @@ echo ""
 if [ "${PHPUNIT_RESULT}" = 0 ]; then
 
   fxMessage "🎉 TEST RAN SUCCESSFULLY!"
+  fxCountdown 3
 
   fxTitle "Running the test command..."
   php tests/RunTestCommand.php

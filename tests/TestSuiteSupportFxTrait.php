@@ -97,4 +97,20 @@ trait TestSuiteSupportFxTrait
     
         return rmdir($dir);
     }
+
+
+    protected function getTempWorkingDirPath() : string
+    {
+        $path  = sys_get_temp_dir();
+        $path .= substr($path, -1) == DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR;
+        $path .= 'TestInstance99' . DIRECTORY_SEPARATOR;
+        return $path;
+    }
+
+
+    protected function getTempWorkingDirFile(string $filename) : string
+    {
+        $path  = $this->getTempWorkingDirPath() . $filename;
+        return $path;
+    }
 }

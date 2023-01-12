@@ -42,25 +42,33 @@ class BaseCommandTestInstance extends AbstractBaseCommand
             echo "🧨🧨 YOU SHOULDN'T SEE THIS 🧨🧨";
         }
 
+        $this->fxTitle("Creating the tempWorkDir...");
+        $tempWorkDirPath = $this->getTempWorkingDirPath();
+        $this->fxOK('TempWorkingDirPath: ##' . $tempWorkDirPath . "##");
+
+        $this->fxTitle("Display a testfile path...");
+        $tempFile = $this->getTempWorkingDirFile(static::FILE_ALWAYS_WRITE);
+        $this->fxOK('TempWorkingDirFile: ##' . $tempFile . "##");
+
         $this->fxTitle("Always writing a file...");
-        file_put_contents( $this->getTestPath(static::FILE_ALWAYS_WRITE), "YES" );
+        file_put_contents( $this->getTempWorkingDirFile(static::FILE_ALWAYS_WRITE), "YES" );
         $this->fxOK();
 
         $this->fxTitle("Writing a file only if not " . static::CLI_OPT_DRY_RUN . "...");
         if( $this->isNotDryRun() ) {
 
-            file_put_contents( $this->getTestPath(static::FILE_NOT_DRY_RUN_WRITE), "YES");
+            file_put_contents( $this->getTempWorkingDirFile(static::FILE_NOT_DRY_RUN_WRITE), "YES");
             $this->fxOK();
         }
 
         $this->fxTitle("Always sending a message...");
-        file_put_contents( $this->getTestPath(static::FILE_ALWAYS_SEND_MSG), "YES" );
+        file_put_contents( $this->getTempWorkingDirFile(static::FILE_ALWAYS_SEND_MSG), "YES" );
         $this->fxOK();
 
         $this->fxTitle("Sending a message only if not " . static::CLI_OPT_BLOCK_MESSAGES . "...");
         if( $this->isSendingMessageAllowed() ) {
 
-            file_put_contents( $this->getTestPath(static::FILE_NOT_BLOCK_SEND_MSG), "YES" );
+            file_put_contents( $this->getTempWorkingDirFile(static::FILE_NOT_BLOCK_SEND_MSG), "YES" );
             $this->fxOK();
         }
 
@@ -78,12 +86,6 @@ class BaseCommandTestInstance extends AbstractBaseCommand
     }
 
 
-    public function getTestPath(string $fileName)
-    {
-        return static::TEST_DIR_PATH . $fileName;
-    }
-
-
     protected function iterateOver(string $fileBasePath, ?int $id = null) : self
     {
         $arrElements = array_fill(0, 5, 'test');
@@ -92,7 +94,7 @@ class BaseCommandTestInstance extends AbstractBaseCommand
             
             if( empty($id) || $this->isIdFilterMatch($key) ) {
 
-                $filePath = $this->getTestPath($fileBasePath .  $key);
+                $filePath = $this->getTempWorkingDirFile($fileBasePath .  $key);
                 file_put_contents($filePath, "YES");
             }
         }

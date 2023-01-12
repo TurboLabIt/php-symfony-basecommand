@@ -12,8 +12,7 @@ class BaseCommandTest extends TestCase
 
     protected function setUp() : void
     {
-        $this->deleteDirectory(BaseCommandTestInstance::TEST_DIR_PATH);
-        mkdir(BaseCommandTestInstance::TEST_DIR_PATH);
+        $this->deleteDirectory( $this->getTempWorkingDirPath() );
     }
 
 
@@ -55,15 +54,35 @@ class BaseCommandTest extends TestCase
     }
 
 
+    public function testTempWorkingDirPath()
+    {
+        $output = $this->runCommandAndGetOutput();
+        $path   = $this->getTempWorkingDirPath();
+
+        $message = 'TempWorkingDirPath: ##' . $path . "##";
+        $this->assertStringContainsString($message, $output);
+    }
+
+
+    public function testTempWorkingDirFile()
+    {
+        $output = $this->runCommandAndGetOutput();
+        $path   = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ALWAYS_WRITE);
+        
+        $message = 'TempWorkingDirFile: ##' . $path . "##";
+        $this->assertStringContainsString($message, $output);
+    }
+
+
     public function testNotDryRun()
     {
         $cmd        = $this->getCommandInstance();
         $cmdReturn  = $this->runCommand($cmd);
 
-        $filePathAlways = $cmd->getTestPath(BaseCommandTestInstance::FILE_ALWAYS_WRITE);
+        $filePathAlways = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ALWAYS_WRITE);
         $this->assertFileExists($filePathAlways);
 
-        $filePathNotDryRun = $cmd->getTestPath(BaseCommandTestInstance::FILE_NOT_DRY_RUN_WRITE);
+        $filePathNotDryRun = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_NOT_DRY_RUN_WRITE);
         $this->assertFileExists($filePathNotDryRun);
     }
 
@@ -73,10 +92,10 @@ class BaseCommandTest extends TestCase
         $cmd        = $this->getCommandInstance();
         $cmdReturn  = $this->runCommand($cmd, ["--" . BaseCommandTestInstance::CLI_OPT_DRY_RUN => true]);
 
-        $filePathAlways = $cmd->getTestPath(BaseCommandTestInstance::FILE_ALWAYS_WRITE);
+        $filePathAlways = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ALWAYS_WRITE);
         $this->assertFileExists($filePathAlways);
 
-        $filePathNotDryRun = $cmd->getTestPath(BaseCommandTestInstance::FILE_NOT_DRY_RUN_WRITE);
+        $filePathNotDryRun = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_NOT_DRY_RUN_WRITE);
         $this->assertFileDoesNotExist($filePathNotDryRun);
     }
 
@@ -86,10 +105,10 @@ class BaseCommandTest extends TestCase
         $cmd        = $this->getCommandInstance();
         $cmdReturn  = $this->runCommand($cmd);
 
-        $filePathAlways = $cmd->getTestPath(BaseCommandTestInstance::FILE_ALWAYS_SEND_MSG);
+        $filePathAlways = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ALWAYS_SEND_MSG);
         $this->assertFileExists($filePathAlways);
 
-        $filePathNotDryRun = $cmd->getTestPath(BaseCommandTestInstance::FILE_NOT_BLOCK_SEND_MSG);
+        $filePathNotDryRun = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_NOT_BLOCK_SEND_MSG);
         $this->assertFileExists($filePathNotDryRun);
     }
 
@@ -99,10 +118,10 @@ class BaseCommandTest extends TestCase
         $cmd        = $this->getCommandInstance();
         $cmdReturn  = $this->runCommand($cmd, ["--" . BaseCommandTestInstance::CLI_OPT_BLOCK_MESSAGES => true]);
 
-        $filePathAlways = $cmd->getTestPath(BaseCommandTestInstance::FILE_ALWAYS_SEND_MSG);
+        $filePathAlways = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ALWAYS_SEND_MSG);
         $this->assertFileExists($filePathAlways);
 
-        $filePathNotDryRun = $cmd->getTestPath(BaseCommandTestInstance::FILE_NOT_BLOCK_SEND_MSG);
+        $filePathNotDryRun = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_NOT_BLOCK_SEND_MSG);
         $this->assertFileDoesNotExist($filePathNotDryRun);
     }
 
@@ -114,10 +133,10 @@ class BaseCommandTest extends TestCase
 
         $arrElements = array_fill(0, 5, 'test');
 
-        $filePathAlways = $cmd->getTestPath(BaseCommandTestInstance::FILE_NO_ID_LIMIT);
+        $filePathAlways = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_NO_ID_LIMIT);
         $this->testId($arrElements, $filePathAlways, true);
 
-        $filePathIdLimit = $cmd->getTestPath(BaseCommandTestInstance::FILE_ID_LIMIT);
+        $filePathIdLimit = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ID_LIMIT);
         $this->testId($arrElements, $filePathIdLimit, true);
     }
 
@@ -131,16 +150,16 @@ class BaseCommandTest extends TestCase
 
         $arrElements = array_fill(0, 5, 'test');
 
-        $filePathAlways = $cmd->getTestPath(BaseCommandTestInstance::FILE_NO_ID_LIMIT);
+        $filePathAlways = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_NO_ID_LIMIT);
         $this->testId($arrElements, $filePathAlways, true);
 
-        $filePathIdLimit = $cmd->getTestPath(BaseCommandTestInstance::FILE_ID_LIMIT);
+        $filePathIdLimit = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ID_LIMIT);
         $this->testId([$processThisIdOnly => 'test'], $filePathIdLimit, true);
 
         $arrElementsFilteredOut = $arrElements;
         unset($arrElementsFilteredOut[$processThisIdOnly]);
 
-        $filePathIdLimit = $cmd->getTestPath(BaseCommandTestInstance::FILE_ID_LIMIT);
+        $filePathIdLimit = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ID_LIMIT);
         $this->testId($arrElementsFilteredOut, $filePathIdLimit, false);
     }
 

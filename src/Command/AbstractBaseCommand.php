@@ -24,10 +24,11 @@ abstract class AbstractBaseCommand extends Command
     use CliOptionsTrait;
     use CliArgumentsTrait;
     use HeaderFooterTrait;
+    use TempWorkDirTrait;
+    use LockableTrait;
 
     protected array $arrConfig;
 
-    use LockableTrait;
     protected InputInterface $input;
     protected OutputInterface $output;
     protected SymfonyStyle $io;

@@ -105,6 +105,7 @@ class BashFx
         $endAt      = new \DateTime();
         $timeTook   = $endAt->getTimestamp() - $this->startedAt->getTimestamp();
         $timeTook   = $timeTook / 60; // in minutes
+        $timeTook   = round($timeTook, 2);
 
         if( $result == AbstractBaseCommand::SUCCESS ) {
 

@@ -28,11 +28,11 @@ trait TempWorkDirTrait
     }
     
     
-    protected function clearWorkingDir() : string
+    protected function deleteWorkingDir() : self
     {
         $path = $this->getTempWorkingDirPath();
         $this->deleteDirectory($path);
-        return $this->getTempWorkingDirPath();
+        return $this;
     }
     
     

@@ -7,6 +7,62 @@ An extensions of Symfony Console Command to build your own CLI commands even fas
 </p>
 
 
+## 🚀 Start your project (without Symfony)
+
+If you are building a simple command and don't want the whole Symfony framework:
+
+````shell
+composer init
+
+````
+
+Install the package (see: [Install it with composer](https://github.com/TurboLabIt/php-symfony-basecommand#-install-it-with-composer).
+
+Use this template to generate a `MyApp.php' bootstrap file:
+
+````php
+<?php
+use MyVendorName\MyApp\MyAppNameCommand;
+use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
+require __DIR__ . '/vendor/autoload.php';
+
+$arrCmdArguments = [
+    MyAppNameCommand::CLI_ARG_MY_ARG => $argv[1],
+    // 💡 https://github.com/TurboLabIt/php-symfony-basecommand/blob/main/src/Traits/CliOptionsTrait.php
+    "--" . AbstractBaseCommand::CLI_OPT_DRY_RUN         => true,
+    //"--" . AbstractBaseCommand::CLI_OPT_BLOCK_MESSAGES  => true,
+];
+
+( new MyAppNameCommand() )
+    ->setName('MyAppName')
+    ->run(new ArrayInput($arrCmdArguments), new ConsoleOutput());
+
+````
+
+Add a `run.sh` for easier execution:
+
+````shell
+#!/usr/bin/env bash
+
+## https://github.com/TurboLabIt/webstackup/blob/master/script/base.sh
+source "/usr/local/turbolab.it/webstackup/script/base.sh"
+fxHeader "🚀 My App"
+EXPECTED_USER=$(logname)
+
+cd $PROJECT_DIR
+
+wsuComposer install
+
+php MyApp.php MyArg1
+
+fxEndFooter
+
+````
+
+
 ## 📦 Install it with composer
 
 ````bash
@@ -17,6 +73,8 @@ symfony composer require turbolabit/php-symfony-basecommand:dev-main
 
 
 ## 🚀 A template for your own Command
+
+You can now use this template to build your own CLI app.
 
 ```php
 <?php declare(strict_types=1);
@@ -101,7 +159,7 @@ class MyCommand extends AbstractBaseCommand
 
 
         // 💡 you can fail-exit the application like this
-        if('something's wrong') {
+        if('something\'s wrong') {
           return $this->endWithError();
         }
 

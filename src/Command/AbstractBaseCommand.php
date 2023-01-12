@@ -10,6 +10,7 @@ use TurboLabIt\PhpSymfonyBasecommand\Traits\BashFxDirectTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\CliOptionsTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\CliArgumentsTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\HeaderFooterTrait;
+use TurboLabIt\PhpSymfonyBasecommand\Traits\TempWorkDirTrait;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

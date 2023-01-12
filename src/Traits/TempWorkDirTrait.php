@@ -19,4 +19,11 @@ trait TempWorkDirTrait
         
         return $path;
     }
+    
+    
+    protected function getTempWorkingDirFile(string $filename) : string
+    {
+        $path = $this->getTempWorkingDirPath() . $filename;
+        return $path;
+    }
 }

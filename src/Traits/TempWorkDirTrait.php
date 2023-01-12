@@ -26,4 +26,36 @@ trait TempWorkDirTrait
         $path = $this->getTempWorkingDirPath() . $filename;
         return $path;
     }
+    
+    
+    protected function clearWorkingDir() : string
+    {
+        $path = $this->getTempWorkingDirPath();
+        $this->deleteDirectory($path);
+        return $this->getTempWorkingDirPath();
+    }
+    
+    
+    protected function deleteDirectory($dir) : bool
+    {
+        if ( !file_exists($dir) ) {
+            return true;
+        }
+    
+        if ( !is_dir($dir) ) {
+            return unlink($dir);
+        }
+    
+        foreach (scandir($dir) as $item) {
+            if ($item == '.' || $item == '..') {
+                continue;
+            }
+    
+            if ( !$this->deleteDirectory($dir . DIRECTORY_SEPARATOR . $item) ) {
+                return false;
+            }
+        }
+    
+        return rmdir($dir);
+    }
 }

@@ -9,6 +9,7 @@ trait CliOptionsTrait
     const CLI_OPT_DRY_RUN           = "dry-run";
     const CLI_OPT_BLOCK_MESSAGES    = "no-email";
     const CLI_OPT_SINGLE_ID         = "id";
+    const CLI_OPT_NO_DOWNLOAD       = "no-download";
     const CLI_OPT_LANGUAGE          = "language";
 
     /**
@@ -36,6 +37,12 @@ trait CliOptionsTrait
      * 💡 It's highly recommended!
      */
     protected bool $allowIdOpt = false;
+    
+    /**
+     * Allow the app to run with local, cached data, without any download?
+     * 💡 If the app downloads data, you should enable it.
+     */
+    protected bool $allowNoDownloadOpt = false;
 
     /**
      * Does this command accept a language (`--CLI_OPT_LANGUAGE=<ln>`?)
@@ -62,6 +69,10 @@ trait CliOptionsTrait
         
         if( $this->allowIdOpt ) {
             $this->addOption(static::CLI_OPT_SINGLE_ID, null, InputOption::VALUE_REQUIRED, 'Process the item identified by this specific ID only');
+        }
+        
+        if( $this->allowNoDownloadOpt ) {
+            $this->addOption(static::CLI_OPT_NO_DOWNLOAD, null, InputOption::VALUE_NONE, 'Run with local, cached data, skipping any download');
         }
 
         if( $this->allowLangOpt ) {

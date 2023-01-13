@@ -104,7 +104,7 @@ trait CliOptionsTrait
         $isDryRun = $this->getCliOption(static::CLI_OPT_DRY_RUN);
         
         if( $isDryRun && !$silent ) {
-            $this->fxInfo("🐰 Skipped due to --" . static::CLI_OPT_DRY_RUN);
+            $this->fxInfo("🦘 Skipped due to --" . static::CLI_OPT_DRY_RUN);
         }
         
         return !$isDryRun;
@@ -116,7 +116,7 @@ trait CliOptionsTrait
         $isMessagingBlocked = $this->getCliOption(static::CLI_OPT_BLOCK_MESSAGES);
         
         if( $isMessagingBlocked && !$silent ) {
-            $this->fxInfo("📪 Skipped due to --" . static::CLI_OPT_BLOCK_MESSAGES);
+            $this->fxInfo("🦘 Skipped due to --" . static::CLI_OPT_BLOCK_MESSAGES);
         }
         
         return !$isMessagingBlocked;
@@ -141,5 +141,17 @@ trait CliOptionsTrait
              $this->fxInfo("🦘 ##$id## skipped due to --" . static::CLI_OPT_SINGLE_ID . "=##$idOpt##");
             return false;
         }
+    }
+    
+    
+    protected function isDownloadAllowed(bool $silent = false) : bool
+    {
+        $isDownloadBlocked = $this->getCliOption(static::CLI_OPT_NO_DOWNLOAD);
+        
+        if( $isDownloadBlocked && !$silent ) {
+            $this->fxInfo("🦘 Skipped due to --" . static::CLI_OPT_NO_DOWNLOAD);
+        }
+        
+        return !$isDownloadBlocked;
     }
 }

@@ -11,6 +11,7 @@ use TurboLabIt\PhpSymfonyBasecommand\Traits\CliOptionsTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\CliArgumentsTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\HeaderFooterTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\TempWorkDirTrait;
+use TurboLabIt\PhpSymfonyBasecommand\Traits\CsvHandlerTrait;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,6 +26,7 @@ abstract class AbstractBaseCommand extends Command
     use CliArgumentsTrait;
     use HeaderFooterTrait;
     use TempWorkDirTrait;
+    use CsvHandlerTrait;
     use LockableTrait;
 
     protected array $arrConfig;

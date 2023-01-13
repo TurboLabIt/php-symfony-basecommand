@@ -4,7 +4,7 @@ namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
 
 trait CsvHandlerTrait
 {
-    int $lastCsvReadRowsNum = 0;
+    protected int $lastCsvReadRowsNum = 0;
     
     
     protected function readCsv(string $csvFilePath, bool $silent = off, string $delimiter = ',', int $headerOffset = 0) : \League\Csv\MapIterator

@@ -90,11 +90,16 @@ use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
 class MyCommand extends AbstractBaseCommand
 {
     // 💡 define your own specific --option(s)
-    const CLI_OPT_MY_OPT = "my-opt"
-
+    const CLI_OPT_MY_OPT = "my-opt";
 
     // 💡 set your `$allow` options: https://github.com/TurboLabIt/php-symfony-basecommand/blob/main/src/Traits/CliOptionsTrait.php
-    protected bool $allow...
+    protected bool $allowParallelExec     = ????;
+    protected bool $allowDryRunOpt        = ????;
+    protected bool $allowBlockMessagesOpt = ????;
+    protected bool $allowIdOpt            = ????;
+    protected bool $allowNoDownloadOpt    = ????;
+    protected bool $allowLangOpt          = ????;
+    protected bool $langOptIsMandatory    = ????;
     
     
     public function __construct(array $arrConfig = [])
@@ -108,7 +113,7 @@ class MyCommand extends AbstractBaseCommand
     {
         parent::configure();
         // 💡 add your own specific option(s)
-        $this->addOption(static::CLI_OPT_MY_OPT, null, InputOption::VALUE_NONE, 'Text description')
+        $this->addOption(static::CLI_OPT_MY_OPT, null, InputOption::VALUE_NONE, 'Text description');
     }
 
 

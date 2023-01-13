@@ -31,7 +31,11 @@ trait TempWorkDirTrait
     protected function deleteWorkingDir() : self
     {
         $path = $this->getTempWorkingDirPath();
-        $this->deleteDirectory($path);
+        
+        if( $this->isDownloadAllowed() ) {
+          $this->deleteDirectory($path);    
+        }
+        
         return $this;
     }
     

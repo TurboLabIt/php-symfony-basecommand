@@ -34,7 +34,6 @@ trait CsvHandlerTrait
         if( !$silent ) {
             $this->fxInfo("📑 Accessing CSV ##" . $csvFilePath . "##");
             $this->fxInfo("This may take a while...");
-            $this->io->newLine();
         }
         
         $csvFile = \League\Csv\Reader::createFromPath($csvFilePath);
@@ -47,6 +46,7 @@ trait CsvHandlerTrait
         
         if( !$silent ) {
             $this->fxOK("🔢 CSV ready. ##" . number_format($this->lastCsvReadRowsNum, 0, ',', '.') . "## row(s) returned");
+            $this->io->newLine();
         }
         
         return $oCsvData;

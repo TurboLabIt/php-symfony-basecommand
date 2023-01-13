@@ -13,7 +13,7 @@ trait CsvHandlerTrait
             $this->fxInfo("📑 Accessing CSV ##" . $csvFilePath . "##");
         }
         
-        $csvFile = \League\Csv\Reader\Reader::createFromPath($csvFilePath);
+        $csvFile = \League\Csv\Reader::createFromPath($csvFilePath);
         $csvFile->setDelimiter($delimiter);
         $csvFile->setHeaderOffset($headerOffset);
         

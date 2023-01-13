@@ -11,10 +11,7 @@ trait CsvHandlerTrait
     
     protected function processCsv(string $csvFilePath, callable $fxProcess, string $delimiter = ',', int $headerOffset = 0) : self
     {
-        $oCsvData = $this->readCsv($csvFilePath, $delimiter, $headerOffset);
-        
-        $this->fxInfo("This may take a while...");
-        $this->io->newLine();
+        $oCsvData = $this->readCsv($csvFilePath, false, $delimiter, $headerOffset);
         
         $progressBar = new ProgressBar($this->output, $this->lastCsvReadRowsNum);
         $progressBar->start();
@@ -36,6 +33,8 @@ trait CsvHandlerTrait
     {
         if( !$silent ) {
             $this->fxInfo("📑 Accessing CSV ##" . $csvFilePath . "##");
+            $this->fxInfo("This may take a while...");
+            $this->io->newLine();
         }
         
         $csvFile = \League\Csv\Reader::createFromPath($csvFilePath);

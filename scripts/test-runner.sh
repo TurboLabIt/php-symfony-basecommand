@@ -15,7 +15,7 @@ fi
 fxHeader "🧪 ${APP_NAME} Test Runner"
 
 # https://github.com/TurboLabIt/webstackup/tree/master/script/php/test-runner-package.sh
-source "/usr/local/turbolab.it/webstackup/script/php/test-runner-package.sh"
+source "${WEBSTACKUP_SCRIPT_DIR}php/test-runner-package.sh"
 
 fxTitle "🧹 Cleaning up..."
 rm -rf /tmp/BaseCommandTestInstance

@@ -12,7 +12,6 @@ else
   EXPECTED_USER=$(logname)
 fi
 
-
 fxHeader "🧪 ${APP_NAME} Test Runner"
 
 # https://github.com/TurboLabIt/webstackup/tree/master/script/php/test-runner-package.sh

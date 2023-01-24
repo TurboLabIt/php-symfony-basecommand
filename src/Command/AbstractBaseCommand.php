@@ -29,18 +29,15 @@ abstract class AbstractBaseCommand extends Command
     use CsvHandlerTrait;
     use LockableTrait;
 
-    protected array $arrConfig;
-
     protected InputInterface $input;
     protected OutputInterface $output;
     protected SymfonyStyle $io;
 
 
-    public function __construct(array $arrConfig = [], ?BashFx $bashFx = null)
+    public function __construct(protected array $arrConfig = [], ?BashFx $bashFx = null)
     {
         parent::__construct();
-        $this->arrConfig    = $arrConfig;
-        $this->bashFx       = $bashFx ?? (new BashFx());
+        $this->bashFx = $bashFx ?? (new BashFx());
     }
 
 
@@ -55,7 +52,7 @@ abstract class AbstractBaseCommand extends Command
         $this->showStart();
 
         ini_set('memory_limit', -1);
-        
+
         $this
             ->autoInit()
             ->checkOptions()

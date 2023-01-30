@@ -11,7 +11,7 @@ trait IteratorTrait
     protected bool $iteratorAutoSkip            = true;
 
 
-    protected function processItems(iterable $items, callable $fxProcess, ?int $itemNum = null, ?callable $fxAutoSkipLogic = null) : self
+    protected function processItems(iterable $items, callable $fxProcess, ?int $itemNum = null, ?callable $fxGenerateItemTitle = null, ?callable $fxAutoSkipLogic = null) : self
     {
         if( $itemNum === null ) {
             $itemNum = count($items);
@@ -29,6 +29,14 @@ trait IteratorTrait
             return $this;
         }
 
+        if( $fxGenerateItemTitle === null ) {
+            $fxGenerateItemTitle = [$this, 'buildItemTitle'];
+        }
+
+        if( $fxAutoSkipLogic === null ) {
+            $fxAutoSkipLogic = [$this, 'iteratorSkipCondition'];
+        }
+
         $progressBar = new ProgressBar($this->output, $itemNum);
         $progressBar->setBarCharacter('<fg=green>=</>');
         $progressBar->setProgressCharacter("🛩️");
@@ -41,13 +49,11 @@ trait IteratorTrait
 
         foreach($items as $key => $item) {
 
-            $title = $this->buildItemTitle($key, $item);
+            $title = $fxGenerateItemTitle($key, $item);
             $progressBar->setMessage($title);
             $progressBar->advance();
 
-            if( $this->iteratorAutoSkip && $fxAutoSkipLogic === null && $this->iteratorSkipCondition($key, $item) ) {
-                continue;
-            } elseif( $this->iteratorAutoSkip && $fxAutoSkipLogic != null && $fxAutoSkipLogic($key, $item) ) {
+            if( $this->iteratorAutoSkip && $fxAutoSkipLogic($key, $item) ) {
                 continue;
             }
 

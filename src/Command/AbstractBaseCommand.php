@@ -34,6 +34,8 @@ abstract class AbstractBaseCommand extends Command
     protected InputInterface $input;
     protected OutputInterface $output;
     protected SymfonyStyle $io;
+    
+    protected array $arrReport = [];
 
     protected array $arrReport = [];
 

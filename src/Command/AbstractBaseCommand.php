@@ -32,6 +32,8 @@ abstract class AbstractBaseCommand extends Command
     protected InputInterface $input;
     protected OutputInterface $output;
     protected SymfonyStyle $io;
+    
+    protected array $arrReport = [];
 
 
     public function __construct(protected array $arrConfig = [], ?BashFx $bashFx = null)

@@ -13,6 +13,7 @@ use TurboLabIt\PhpSymfonyBasecommand\Traits\HeaderFooterTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\TempWorkDirTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\CsvHandlerTrait;
 use Symfony\Component\Console\Command\LockableTrait;
+use TurboLabIt\PhpSymfonyBasecommand\Traits\IteratorTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -28,10 +29,13 @@ abstract class AbstractBaseCommand extends Command
     use TempWorkDirTrait;
     use CsvHandlerTrait;
     use LockableTrait;
+    use IteratorTrait;
 
     protected InputInterface $input;
     protected OutputInterface $output;
     protected SymfonyStyle $io;
+
+    protected array $arrReport = [];
 
 
     public function __construct(protected array $arrConfig = [], ?BashFx $bashFx = null)

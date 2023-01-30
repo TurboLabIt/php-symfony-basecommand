@@ -31,7 +31,16 @@ trait HeaderFooterTrait
             return $this;
         }
 
-        $this->fxTitle("Report");
+        return
+            $this
+                ->fxTitle("📊 Report")
+                ->executionReport();
+    }
+    
+    
+    protected function executionReport() : self
+    {
+        // customize
         return $this;
     }
 }

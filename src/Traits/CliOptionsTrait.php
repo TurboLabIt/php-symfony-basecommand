@@ -2,6 +2,7 @@
 namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
 
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 
 trait CliOptionsTrait
@@ -26,8 +27,8 @@ trait CliOptionsTrait
     protected bool $allowDryRunOpt = false;
 
     /**
-     * Does this command accept `--CLI_OPT_BLOCK_MESSAGES`? 
-     * 💡 It's highly recommended if this commands sends 
+     * Does this command accept `--CLI_OPT_BLOCK_MESSAGES`?
+     * 💡 It's highly recommended if this commands sends
      * emails or messages!
      */
     protected bool $allowBlockMessagesOpt = false;
@@ -37,7 +38,7 @@ trait CliOptionsTrait
      * 💡 It's highly recommended!
      */
     protected bool $allowIdOpt = false;
-    
+
     /**
      * Allow the app to run with local, cached data, without any download?
      * 💡 If the app downloads data, you should enable it.
@@ -66,11 +67,11 @@ trait CliOptionsTrait
         if( $this->allowBlockMessagesOpt ) {
             $this->addOption(static::CLI_OPT_BLOCK_MESSAGES, null, InputOption::VALUE_NONE, 'Don\t send any emails or messages');
         }
-        
+
         if( $this->allowIdOpt ) {
             $this->addOption(static::CLI_OPT_SINGLE_ID, null, InputOption::VALUE_REQUIRED, 'Process the item identified by this specific ID only');
         }
-        
+
         if( $this->allowNoDownloadOpt ) {
             $this->addOption(static::CLI_OPT_NO_DOWNLOAD, null, InputOption::VALUE_NONE, 'Run with local, cached data, skipping any download');
         }
@@ -102,11 +103,11 @@ trait CliOptionsTrait
     protected function isNotDryRun(bool $silent = false) : bool
     {
         $isDryRun = $this->getCliOption(static::CLI_OPT_DRY_RUN);
-        
+
         if( $isDryRun && !$silent ) {
             $this->fxInfo("🦘 Skipped due to --" . static::CLI_OPT_DRY_RUN);
         }
-        
+
         return !$isDryRun;
     }
 
@@ -114,44 +115,58 @@ trait CliOptionsTrait
     protected function isSendingMessageAllowed(bool $silent = false) : bool
     {
         $isMessagingBlocked = $this->getCliOption(static::CLI_OPT_BLOCK_MESSAGES);
-        
+
         if( $isMessagingBlocked && !$silent ) {
             $this->fxInfo("🦘 Skipped due to --" . static::CLI_OPT_BLOCK_MESSAGES);
         }
-        
+
         return !$isMessagingBlocked;
+    }
+
+
+    protected function warnIdFilterSet() : bool
+    {
+        if( !$this->allowIdOpt ) {
+            return false;
+        }
+
+        $idOpt = $this->getCliOption(static::CLI_OPT_SINGLE_ID);
+        if( $idOpt === null ) {
+            return false;
+        }
+
+        $this->fxWarning("--" . static::CLI_OPT_SINGLE_ID . "=##$idOpt## is set!");
+        return true;
     }
 
 
     protected function isIdFilterMatch(int $id, bool $silent = false) : bool
     {
         $idOpt = $this->getCliOption(static::CLI_OPT_SINGLE_ID);
-        
+
         if( $idOpt === null ) {
             return true;
         }
-        
+
         if( $id == $idOpt ) {
-            
+
             $this->fxInfo("🎯 --" . static::CLI_OPT_SINGLE_ID . "=##$id##: HIT!");
             return true;
-            
-        } else {
-            
-             $this->fxInfo("🦘 ##$id## skipped due to --" . static::CLI_OPT_SINGLE_ID . "=##$idOpt##");
-            return false;
         }
+
+        $this->fxInfo("🦘 ##$id## skipped due to --" . static::CLI_OPT_SINGLE_ID . "=##$idOpt##");
+        return false;
     }
-    
-    
+
+
     protected function isDownloadAllowed(bool $silent = false) : bool
     {
         $isDownloadBlocked = $this->getCliOption(static::CLI_OPT_NO_DOWNLOAD);
-        
+
         if( $isDownloadBlocked && !$silent ) {
             $this->fxInfo("🦘 Skipped due to --" . static::CLI_OPT_NO_DOWNLOAD);
         }
-        
+
         return !$isDownloadBlocked;
     }
 }

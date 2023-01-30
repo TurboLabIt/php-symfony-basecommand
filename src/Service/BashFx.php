@@ -15,7 +15,7 @@ class BashFx
     protected ?SymfonyStyle $io;
 
     protected \DateTime $startedAt;
-    
+
 
     public function __construct(?InputInterface $input = null, ?OutputInterface $output = null)
     {
@@ -42,7 +42,7 @@ class BashFx
         $message =
             trim($message) . PHP_EOL .
             "📅 " . $this->startedAt->format("H:i:s | l, F d, Y");
-        
+
         $this->io->block($message, null, 'fg=black;bg=cyan', ' ', true);
         return $this;
     }
@@ -78,7 +78,14 @@ class BashFx
             $message = "OK";
         }
 
-        $this->io->writeln('<info>' . $message . '</>');
+        $this->io->writeln("<info>$message</>");
+        return $this;
+    }
+
+
+    public function fxWarning(string $message) : self
+    {
+        $this->io->note("$message");
         return $this;
     }
 
@@ -118,7 +125,7 @@ class BashFx
             $word       = 'KO';
         }
 
-        $message    = 
+        $message    =
             "🏁 The End 🏁 | " . $word . PHP_EOL .
             "📅 " . $endAt->format("H:i:s | l, F d, Y") . PHP_EOL .
             "⌚ Total time: " . $timeTook . " min.";

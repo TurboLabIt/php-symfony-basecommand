@@ -77,7 +77,7 @@ trait IteratorTrait
 
             foreach(['getName', 'getTitle'] as $method) {
                 if( method_exists($item, $method) ) {
-                    $txtTitle = $item->$method();
+                    $txtName = $item->$method();
                     break;
                 }
             }
@@ -86,18 +86,18 @@ trait IteratorTrait
 
             foreach(['name', 'Name', 'title', 'Title'] as $key) {
                 if( !empty($item[$key]) ) {
-                    $txtTitle = $item[$key];
+                    $txtName = $item[$key];
                     break;
                 }
             }
 
         } else {
 
-            $txtTitle = $item;
+            $txtName = $item;
         }
 
-        $txtTitle = trim($txtTitle);
-        return $txtTitle;
+        $txtName = trim($txtName);
+        return $txtName;
     }
 
 

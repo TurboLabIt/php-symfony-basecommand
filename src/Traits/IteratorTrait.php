@@ -40,14 +40,19 @@ trait IteratorTrait
             $fxAutoSkipLogic = [$this, 'iteratorSkipCondition'];
         }
 
+        ProgressBar::setFormatDefinition('custom',
+            '%current%/%max% [%bar%] %percent:3s%% ⏳️ %elapsed:6s%/%estimated:-6s% 📈 %memory:6s%' . PHP_EOL . '👉️ %message%'
+        );
+
         $progressBar = new ProgressBar($this->output, $itemNum);
         $progressBar->setBarCharacter('<fg=green>-</>');
         $progressBar->setProgressCharacter("ᗧ");
         $progressBar->setEmptyBarCharacter("<fg=red>•</>");
-        ProgressBar::setFormatDefinition('custom',
-            '%current%/%max% [%bar%] %percent:3s%% ⏳️ %elapsed:6s%/%estimated:-6s% 📈 %memory:6s%' . PHP_EOL . '👉️ %message%'
-        );
         $progressBar->setFormat('custom');
+        $progressBar->setRedrawFrequency(1);
+        $progressBar->maxSecondsBetweenRedraws(0);
+        $progressBar->minSecondsBetweenRedraws(0);
+
         $progressBar->setMessage("🏁 Starting...");
         $progressBar->start();
 

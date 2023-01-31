@@ -8,6 +8,7 @@ trait IteratorTrait
 {
     protected bool $iteratorWarnIfEmpty         = true;
     protected bool $iteratorWarnIfSingleIdOpt   = true;
+    protected bool $iteratorWarnIfDryRun        = true;
     protected bool $iteratorAutoSkip            = true;
 
 
@@ -24,6 +25,8 @@ trait IteratorTrait
         if( $this->iteratorWarnIfSingleIdOpt ) {
             $this->warnIdFilterSet();
         }
+
+        $this->isNotDryRun( !$this->iteratorWarnIfDryRun );
 
         if( $itemNum === 0 ) {
             return $this;

@@ -41,8 +41,9 @@ trait IteratorTrait
         }
 
         $progressBar = new ProgressBar($this->output, $itemNum);
-        $progressBar->setBarCharacter('<fg=green>=</>');
-        $progressBar->setProgressCharacter("🛩️");
+        $progressBar->setBarCharacter('<fg=green>-</>');
+        $progressBar->setProgressCharacter("ᗧ");
+        $progressBar->setEmptyBarCharacter("<fg=red>•</>");
         ProgressBar::setFormatDefinition('custom',
             '%current%/%max% [%bar%] %percent:3s%% ⏳️ %elapsed:6s%/%estimated:-6s% 📈 %memory:6s%' . PHP_EOL . '👉️ %message%'
         );
@@ -121,10 +122,7 @@ trait IteratorTrait
 
     protected function iteratorSkipCondition($key, $item) : bool
     {
-        if( !$this->isIdFilterMatch($key, true) ){
-            return true;
-        }
-
-        return false;
+        $isIdFilterMatch = $this->isIdFilterMatch($key, true);
+        return !$isIdFilterMatch;
     }
 }

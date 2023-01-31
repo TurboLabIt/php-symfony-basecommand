@@ -105,7 +105,7 @@ trait CliOptionsTrait
         $isDryRun = $this->getCliOption(static::CLI_OPT_DRY_RUN);
 
         if( $isDryRun && !$silent ) {
-            $this->fxInfo("🦘 Skipped due to --" . static::CLI_OPT_DRY_RUN);
+            $this->fxWarning("🦘 Skipped due to --" . static::CLI_OPT_DRY_RUN);
         }
 
         return !$isDryRun;
@@ -117,7 +117,7 @@ trait CliOptionsTrait
         $isMessagingBlocked = $this->getCliOption(static::CLI_OPT_BLOCK_MESSAGES);
 
         if( $isMessagingBlocked && !$silent ) {
-            $this->fxInfo("🦘 Skipped due to --" . static::CLI_OPT_BLOCK_MESSAGES);
+            $this->fxWarning("🦘 Skipped due to --" . static::CLI_OPT_BLOCK_MESSAGES);
         }
 
         return !$isMessagingBlocked;
@@ -148,13 +148,20 @@ trait CliOptionsTrait
             return true;
         }
 
-        if( $id == $idOpt ) {
+        if( $id == $idOpt && !$silent) {
 
-            $this->fxInfo("🎯 --" . static::CLI_OPT_SINGLE_ID . "=##$id##: HIT!");
+            $this->fxWarning("🎯 --" . static::CLI_OPT_SINGLE_ID . "=##$id##: HIT!");
             return true;
         }
 
-        $this->fxInfo("🦘 ##$id## skipped due to --" . static::CLI_OPT_SINGLE_ID . "=##$idOpt##");
+        if( $id == $idOpt ) {
+            return true;
+        }
+
+        if( !$silent ) {
+            $this->fxWarning("🦘 ##$id## skipped due to --" . static::CLI_OPT_SINGLE_ID . "=##$idOpt##");
+        }
+
         return false;
     }
 

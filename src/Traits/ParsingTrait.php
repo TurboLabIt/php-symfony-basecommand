@@ -12,7 +12,7 @@ trait ParsingTrait
 
         $arrFids = explode(',', $csvIds);
         array_walk_recursive($arrFids, function(&$value) {
-            $value = is_null($value) ? null : trim($value);
+            $value = is_null($value) ? null : ((int)trim($value));
         });
 
         $arrItems   = [];
@@ -34,7 +34,7 @@ trait ParsingTrait
             $this->io->newLine();
             $this->fxWarning(
                 "$itemTitle: Some related $relatedItemsName don't exist. " .
-                "Failing item(s): " . implode(',', $arrFailIds)
+                "Failing item(s): " . implode(',', $arrFailIds) . PHP_EOL
             );
         }
 

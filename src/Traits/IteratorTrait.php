@@ -41,7 +41,7 @@ trait IteratorTrait
         }
 
         ProgressBar::setFormatDefinition('custom',
-            '%current%/%max% [%bar%] %percent:3s%% ⏳️ %elapsed:6s%/%estimated:-6s% 📈 %memory:6s%' . PHP_EOL . '👉️ %message%'
+            '%current%/%max% [%bar%] %percent:3s%% ⏳️ %elapsed:6s%/%estimated:-6s% 📈 %memory:6s%' . PHP_EOL . '👉️ %message%' . PHP_EOL
         );
 
         $progressBar = new ProgressBar($this->output, $itemNum);

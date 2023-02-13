@@ -142,6 +142,10 @@ trait CliOptionsTrait
 
     protected function isIdFilterMatch(int $id, bool $silent = false) : bool
     {
+        if( !$this->allowIdOpt ) {
+            return true;
+        }
+
         $idOpt = $this->getCliOption(static::CLI_OPT_SINGLE_ID);
 
         if( $idOpt === null ) {

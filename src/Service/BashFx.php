@@ -90,7 +90,7 @@ class BashFx
     }
 
 
-    public function fxCatastrophicError(string $message, bool $endFooterAndStop = true) : int
+    public function fxCatastrophicError(string $message, bool $endFooterAndStop = true, ?string $commandName = null) : int
     {
         $txtCatastrophicError = "🛑 Catastrophic error 🛑";
         $fullMessage = $txtCatastrophicError . PHP_EOL . $message;
@@ -98,7 +98,7 @@ class BashFx
 
         if( $endFooterAndStop) {
 
-            $this->fxEndFooter(AbstractBaseCommand::FAILURE);
+            $this->fxEndFooter(AbstractBaseCommand::FAILURE, $commandName);
             $fullMessage = $txtCatastrophicError . " | " . $message;
             throw new RuntimeException($fullMessage);
         }
@@ -107,7 +107,7 @@ class BashFx
     }
 
 
-    public function fxEndFooter(int $result = AbstractBaseCommand::SUCCESS) : int
+    public function fxEndFooter(int $result, ?string $commandName = null) : int
     {
         $endAt      = new \DateTime();
         $timeTook   = $endAt->getTimestamp() - $this->startedAt->getTimestamp();
@@ -125,8 +125,10 @@ class BashFx
             $word       = 'KO';
         }
 
+        $commandNameTxt = empty($commandName) ? '' : "$commandName: ";
+
         $message    =
-            "🏁 The End 🏁 | " . $word . PHP_EOL .
+            "🏁 ${commandNameTxt}The End 🏁 | " . $word . PHP_EOL .
             "📅 " . $endAt->format("H:i:s | l, F d, Y") . PHP_EOL .
             "⌚ Total time: " . $timeTook . " min.";
 

@@ -1,6 +1,8 @@
 <?php
 namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
 
+use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
+
 trait HeaderFooterTrait
 {
     protected function showStart() : self
@@ -15,7 +17,7 @@ trait HeaderFooterTrait
         return
             $this
                 ->showEndReport()
-                ->bashFx->fxEndFooter();
+                ->bashFx->fxEndFooter( static::SUCCESS, $this->getName() );
     }
 
 
@@ -36,8 +38,8 @@ trait HeaderFooterTrait
                 ->fxTitle("📊 Report")
                 ->executionReport();
     }
-    
-    
+
+
     protected function executionReport() : self
     {
         // customize

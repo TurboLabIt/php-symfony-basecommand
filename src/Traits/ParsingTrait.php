@@ -12,7 +12,9 @@ trait ParsingTrait
 
         $arrFids = explode(',', $csvIds);
         array_walk_recursive($arrFids, function(&$value) {
-            $value = is_null($value) ? null : ((int)trim($value));
+            if( !is_null($value) ) {
+                $value = (int)trim($value);
+            }
         });
 
         $arrItems   = [];
@@ -20,11 +22,8 @@ trait ParsingTrait
         foreach($arrFids as $fId) {
 
             if( array_key_exists($fId, $arrDataSource) ) {
-
                 $arrItems[$fId] = $arrDataSource[$fId];
-
             } else {
-
                 $arrFailIds[] = $fId;
             }
         }

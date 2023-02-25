@@ -66,7 +66,7 @@ fxEndFooter
 ## 📦 Install it with composer
 
 ````bash
-symfony composer config repositories.TurboLabIt/BaseCommand git https://github.com/TurboLabIt/php-symfony-basecommand.git
+symfony composer config repositories.turbolabit/php-symfony-basecommand git https://github.com/TurboLabIt/php-symfony-basecommand.git
 symfony composer require turbolabit/php-symfony-basecommand:dev-main
 
 ````

@@ -51,6 +51,29 @@ trait CsvHandlerTrait
         
         return $oCsvData;
     }
+    
+    
+    protected function writeCsv(string $csvFilePath, array $arrDataToWrite, bool $silent = false, string $delimiter = ',') : self
+    {
+        if( !$silent ) {
+            $this->fxInfo("📑 Writing CSV ##" . $csvFilePath . "##");
+        }
+        
+        $csv = \League\Csv\Writer::createFromPath($csvFilePath, 'w+');
+        $csv->setDelimiter($delimiter);
+        $csv->insertAll($arrDataToWrite);
+        
+        return $this;
+    }
+    
+    
+    protected function writeCsvToVarArrayPath(array $arrFilePath, array $arrDataToWrite, bool $silent = false, string $delimiter = ',') : self
+    {
+        $arrPath    = array_merge(['var'], $arrFilePath);
+        $filePath   = $this->getPathFile($arrPath, true);
+        
+        return $this->writeCsv($filePath, $arrDataToWrite, $silent, $delimiter);
+    }
 
 
     protected function getPathFile(array $arrSubPath, bool $autoCreate = false) : string

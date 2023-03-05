@@ -80,10 +80,11 @@ You can now use this template to build your own CLI app.
 <?php declare(strict_types=1);
 namespace App\Command;
 
+use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
 
 
 #[AsCommand(name: 'MyCommand')]

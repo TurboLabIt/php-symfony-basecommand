@@ -42,7 +42,13 @@ trait HeaderFooterTrait
 
     protected function executionReport() : self
     {
-        // customize
+        $arrDefinitionList = [];
+        foreach($this->arrReport as $key => $value) {
+            $arrDefinitionList[] = [ $key => $value ];
+        }
+
+        $this->io->definitionList(...$arrDefinitionList);
+
         return $this;
     }
 }

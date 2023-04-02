@@ -102,6 +102,10 @@ trait CliOptionsTrait
 
     protected function isNotDryRun(bool $silent = false) : bool
     {
+        if( !$this->allowDryRunOpt ) {
+            return true;
+        }
+        
         $isDryRun = $this->getCliOption(static::CLI_OPT_DRY_RUN);
 
         if( $isDryRun && !$silent ) {

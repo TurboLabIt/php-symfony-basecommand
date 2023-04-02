@@ -27,6 +27,17 @@ trait HeaderFooterTrait
     }
 
 
+    protected function addToReport($key, $newValue) : bool
+    {
+        if( in_array($newValue, $this->arrReport[$key]) ) {
+            return false;
+        }
+
+        $this->arrReport[$key][] = $newValue;
+        return true;
+    }
+
+
     protected function showEndReport() : self
     {
         if( empty($this->arrReport) ) {
@@ -44,6 +55,11 @@ trait HeaderFooterTrait
     {
         $arrDefinitionList = [];
         foreach($this->arrReport as $key => $value) {
+
+            if( is_array($value) ) {
+                $value = implode('##, ##', $value);
+            }
+
             $arrDefinitionList[] = [ $key => $value ];
         }
 

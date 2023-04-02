@@ -128,7 +128,7 @@ class BashFx
         $commandNameTxt = empty($commandName) ? '' : "$commandName: ";
 
         $message    =
-            "🏁 ${commandNameTxt}The End 🏁 | " . $word . PHP_EOL .
+            "🏁 {$commandNameTxt}The End 🏁 | " . $word . PHP_EOL .
             "📅 " . $endAt->format("H:i:s | l, F d, Y") . PHP_EOL .
             "⌚ Total time: " . $timeTook . " min.";
 

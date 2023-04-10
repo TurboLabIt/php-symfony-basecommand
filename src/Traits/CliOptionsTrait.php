@@ -98,20 +98,28 @@ trait CliOptionsTrait
     {
         return $this->input->getOption($staticCLI_OPT_NAME);
     }
-
-
-    protected function isNotDryRun(bool $silent = false) : bool
+    
+    
+    
+    protected function isDryRun(bool $silent = false) : bool
     {
         if( !$this->allowDryRunOpt ) {
-            return true;
+            return false;
         }
         
         $isDryRun = $this->getCliOption(static::CLI_OPT_DRY_RUN);
 
         if( $isDryRun && !$silent ) {
-            $this->fxWarning("🦘 Skipped due to --" . static::CLI_OPT_DRY_RUN);
+            $this->fxWarning("🧪 --" . static::CLI_OPT_DRY_RUN . " is active");
         }
 
+        return $isDryRun;
+    }
+
+
+    protected function isNotDryRun(bool $silent = false) : bool
+    {
+        $isDryRun = $this->isDryRun($silent);
         return !$isDryRun;
     }
 

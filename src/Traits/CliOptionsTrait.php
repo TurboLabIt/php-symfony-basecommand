@@ -2,17 +2,11 @@
 namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
 
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Helper\ProgressBar;
+use TurboLabIt\PhpSymfonyBasecommand\Service\Options;
 
 
 trait CliOptionsTrait
 {
-    const CLI_OPT_DRY_RUN           = "dry-run";
-    const CLI_OPT_BLOCK_MESSAGES    = "no-email";
-    const CLI_OPT_SINGLE_ID         = "id";
-    const CLI_OPT_NO_DOWNLOAD       = "no-download";
-    const CLI_OPT_LANGUAGE          = "language";
-
     /**
      * Can multiple instances of this command run in parallel?
      * 💡 You shouldn't allow it, unless you explictely design the
@@ -61,23 +55,23 @@ trait CliOptionsTrait
         parent::configure();
 
         if( $this->allowDryRunOpt ) {
-            $this->addOption(static::CLI_OPT_DRY_RUN, null, InputOption::VALUE_NONE, 'Read-only test run. Don\'t really change anything');
+            $this->addOption(Options::CLI_OPT_DRY_RUN, null, InputOption::VALUE_NONE, 'Read-only test run. Don\'t really change anything');
         }
 
         if( $this->allowBlockMessagesOpt ) {
-            $this->addOption(static::CLI_OPT_BLOCK_MESSAGES, null, InputOption::VALUE_NONE, 'Don\t send any emails or messages');
+            $this->addOption(Options::CLI_OPT_BLOCK_MESSAGES, null, InputOption::VALUE_NONE, 'Don\t send any emails or messages');
         }
 
         if( $this->allowIdOpt ) {
-            $this->addOption(static::CLI_OPT_SINGLE_ID, null, InputOption::VALUE_REQUIRED, 'Process the item identified by this specific ID only');
+            $this->addOption(Options::CLI_OPT_SINGLE_ID, null, InputOption::VALUE_REQUIRED, 'Process the item identified by this specific ID only');
         }
 
         if( $this->allowNoDownloadOpt ) {
-            $this->addOption(static::CLI_OPT_NO_DOWNLOAD, null, InputOption::VALUE_NONE, 'Run with local, cached data, skipping any download');
+            $this->addOption(Options::CLI_OPT_NO_DOWNLOAD, null, InputOption::VALUE_NONE, 'Run with local, cached data, skipping any download');
         }
 
         if( $this->allowLangOpt ) {
-            $this->addOption(static::CLI_OPT_LANGUAGE, null, InputOption::VALUE_REQUIRED, 'The language to work on');
+            $this->addOption(Options::CLI_OPT_LANGUAGE, null, InputOption::VALUE_REQUIRED, 'The language to work on');
         }
     }
 
@@ -88,8 +82,8 @@ trait CliOptionsTrait
             $this->endWithError('The command ##' . $this->getName() . '## is already running in another process');
         }
 
-        if( $this->langOptIsMandatory && empty($this->getCliOption(static::CLI_OPT_LANGUAGE)) ) {
-            $this->endWithError('The --' . static::CLI_OPT_LANGUAGE . "=... option is MANDATORY");
+        if( $this->langOptIsMandatory && empty($this->getCliOption(Options::CLI_OPT_LANGUAGE)) ) {
+            $this->endWithError('The --' . Options::CLI_OPT_LANGUAGE . "=... option is MANDATORY");
         }
     }
 
@@ -98,19 +92,19 @@ trait CliOptionsTrait
     {
         return $this->input->getOption($staticCLI_OPT_NAME);
     }
-    
-    
-    
+
+
+
     protected function isDryRun(bool $silent = false) : bool
     {
         if( !$this->allowDryRunOpt ) {
             return false;
         }
-        
-        $isDryRun = $this->getCliOption(static::CLI_OPT_DRY_RUN);
+
+        $isDryRun = $this->getCliOption(Options::CLI_OPT_DRY_RUN);
 
         if( $isDryRun && !$silent ) {
-            $this->fxWarning("🧪 --" . static::CLI_OPT_DRY_RUN . " is active");
+            $this->fxWarning("🧪 --" . Options::CLI_OPT_DRY_RUN . " is active");
         }
 
         return $isDryRun;
@@ -126,10 +120,10 @@ trait CliOptionsTrait
 
     protected function isSendingMessageAllowed(bool $silent = false) : bool
     {
-        $isMessagingBlocked = $this->getCliOption(static::CLI_OPT_BLOCK_MESSAGES);
+        $isMessagingBlocked = $this->getCliOption(Options::CLI_OPT_BLOCK_MESSAGES);
 
         if( $isMessagingBlocked && !$silent ) {
-            $this->fxWarning("🦘 Skipped due to --" . static::CLI_OPT_BLOCK_MESSAGES);
+            $this->fxWarning("🦘 Skipped due to --" . Options::CLI_OPT_BLOCK_MESSAGES);
         }
 
         return !$isMessagingBlocked;
@@ -142,12 +136,12 @@ trait CliOptionsTrait
             return false;
         }
 
-        $idOpt = $this->getCliOption(static::CLI_OPT_SINGLE_ID);
+        $idOpt = $this->getCliOption(Options::CLI_OPT_SINGLE_ID);
         if( $idOpt === null ) {
             return false;
         }
 
-        $this->fxWarning("--" . static::CLI_OPT_SINGLE_ID . "=##$idOpt## is set!");
+        $this->fxWarning("--" . Options::CLI_OPT_SINGLE_ID . "=##$idOpt## is set!");
         return true;
     }
 
@@ -158,7 +152,7 @@ trait CliOptionsTrait
             return true;
         }
 
-        $idOpt = $this->getCliOption(static::CLI_OPT_SINGLE_ID);
+        $idOpt = $this->getCliOption(Options::CLI_OPT_SINGLE_ID);
 
         if( $idOpt === null ) {
             return true;
@@ -166,7 +160,7 @@ trait CliOptionsTrait
 
         if( $id == $idOpt && !$silent) {
 
-            $this->fxWarning("🎯 --" . static::CLI_OPT_SINGLE_ID . "=##$id##: HIT!");
+            $this->fxWarning("🎯 --" . Options::CLI_OPT_SINGLE_ID . "=##$id##: HIT!");
             return true;
         }
 
@@ -175,7 +169,7 @@ trait CliOptionsTrait
         }
 
         if( !$silent ) {
-            $this->fxWarning("🦘 ##$id## skipped due to --" . static::CLI_OPT_SINGLE_ID . "=##$idOpt##");
+            $this->fxWarning("🦘 ##$id## skipped due to --" . Options::CLI_OPT_SINGLE_ID . "=##$idOpt##");
         }
 
         return false;
@@ -184,10 +178,10 @@ trait CliOptionsTrait
 
     protected function isDownloadAllowed(bool $silent = false) : bool
     {
-        $isDownloadBlocked = $this->getCliOption(static::CLI_OPT_NO_DOWNLOAD);
+        $isDownloadBlocked = $this->getCliOption(Options::CLI_OPT_NO_DOWNLOAD);
 
         if( $isDownloadBlocked && !$silent ) {
-            $this->fxInfo("🦘 Skipped due to --" . static::CLI_OPT_NO_DOWNLOAD);
+            $this->fxInfo("🦘 Skipped due to --" . Options::CLI_OPT_NO_DOWNLOAD);
         }
 
         return !$isDownloadBlocked;

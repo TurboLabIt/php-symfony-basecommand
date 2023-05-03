@@ -2,6 +2,7 @@
 namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
 
 use Symfony\Component\Console\Helper\ProgressBar;
+use TurboLabIt\PhpSymfonyBasecommand\Service\ItemStringify;
 
 
 trait IteratorTrait
@@ -10,6 +11,8 @@ trait IteratorTrait
     protected bool $iteratorWarnIfSingleIdOpt   = true;
     protected bool $iteratorWarnIfDryRun        = true;
     protected bool $iteratorAutoSkip            = true;
+
+    protected ItemStringify $itemStringify;
 
 
     protected function processItems(iterable $items, callable $fxProcess, ?int $itemNum = null, ?callable $fxGenerateItemTitle = null, ?callable $fxAutoSkipLogic = null) : self
@@ -80,48 +83,13 @@ trait IteratorTrait
 
     protected function buildItemName($key, $item) : string
     {
-        $txtName = '';
-
-        if( is_object($item) ) {
-
-            foreach(['getName', 'getTitle'] as $method) {
-                if( method_exists($item, $method) ) {
-                    $txtName = $item->$method();
-                    break;
-                }
-            }
-
-        } elseif( is_array($item) ) {
-
-            foreach(['name', 'Name', 'title', 'Title'] as $key) {
-                if( !empty($item[$key]) ) {
-                    $txtName = $item[$key];
-                    break;
-                }
-            }
-
-        } else {
-
-            $txtName = $item;
-        }
-
-        $txtName = trim($txtName);
-        return $txtName;
+        return $this->itemStringify->buildItemName($item);
     }
 
 
     protected function buildItemTitle($key, $item) : string
     {
-        $txtTitle = '';
-
-        if( !empty($key) ) {
-            $txtTitle = "[$key] ";
-        }
-
-        $txtTitle .= $this->buildItemName($key, $item);
-
-        trim($txtTitle);
-        return $txtTitle;
+        return $this->itemStringify->buildItemTitle($item, $key);
     }
 
 

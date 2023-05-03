@@ -6,6 +6,7 @@
 namespace TurboLabIt\PhpSymfonyBasecommand\Command;
 
 use Symfony\Component\Console\Command\Command;
+use TurboLabIt\PhpSymfonyBasecommand\Service\ItemStringify;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\BashFxDirectTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\CliOptionsTrait;
 use TurboLabIt\PhpSymfonyBasecommand\Traits\CliArgumentsTrait;
@@ -40,10 +41,14 @@ abstract class AbstractBaseCommand extends Command
     protected array $arrReport = [];
 
 
-    public function __construct(protected array $arrConfig = [], ?BashFx $bashFx = null)
+    public function __construct(
+        protected array $arrConfig = [],
+        ?BashFx $bashFx = null, ?ItemStringify $itemStringify = null
+    )
     {
         parent::__construct();
-        $this->bashFx = $bashFx ?? (new BashFx());
+        $this->bashFx           = $bashFx ?? (new BashFx());
+        $this->itemStringify    = $itemStringify ?? (new ItemStringify());
     }
 
 

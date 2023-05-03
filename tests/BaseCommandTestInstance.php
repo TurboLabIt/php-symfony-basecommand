@@ -5,6 +5,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
+use TurboLabIt\PhpSymfonyBasecommand\Service\Options;
 
 
 #[AsCommand(name: 'TestInstance82')]
@@ -54,7 +55,7 @@ class BaseCommandTestInstance extends AbstractBaseCommand
         file_put_contents( $this->getTempWorkingDirFile(static::FILE_ALWAYS_WRITE), "YES" );
         $this->fxOK();
 
-        $this->fxTitle("Writing a file only if not " . static::CLI_OPT_DRY_RUN . "...");
+        $this->fxTitle("Writing a file only if not " . Options::CLI_OPT_DRY_RUN . "...");
         if( $this->isNotDryRun() ) {
 
             file_put_contents( $this->getTempWorkingDirFile(static::FILE_NOT_DRY_RUN_WRITE), "YES");
@@ -65,7 +66,7 @@ class BaseCommandTestInstance extends AbstractBaseCommand
         file_put_contents( $this->getTempWorkingDirFile(static::FILE_ALWAYS_SEND_MSG), "YES" );
         $this->fxOK();
 
-        $this->fxTitle("Sending a message only if not " . static::CLI_OPT_BLOCK_MESSAGES . "...");
+        $this->fxTitle("Sending a message only if not " . Options::CLI_OPT_BLOCK_MESSAGES . "...");
         if( $this->isSendingMessageAllowed() ) {
 
             file_put_contents( $this->getTempWorkingDirFile(static::FILE_NOT_BLOCK_SEND_MSG), "YES" );
@@ -78,10 +79,10 @@ class BaseCommandTestInstance extends AbstractBaseCommand
                 ->iterateOver(static::FILE_NO_ID_LIMIT)
                 ->fxOK()
 
-                ->fxTitle("Iterating over elements, but filtering on ##" . $this->getCliOption(static::CLI_OPT_SINGLE_ID) . "##...")
-                ->iterateOver(static::FILE_ID_LIMIT, $this->getCliOption(static::CLI_OPT_SINGLE_ID))
+                ->fxTitle("Iterating over elements, but filtering on ##" . $this->getCliOption(Options::CLI_OPT_SINGLE_ID) . "##...")
+                ->iterateOver(static::FILE_ID_LIMIT, $this->getCliOption(Options::CLI_OPT_SINGLE_ID))
                 ->fxOK()
-                
+
                 ->endWithSuccess();
     }
 
@@ -91,7 +92,7 @@ class BaseCommandTestInstance extends AbstractBaseCommand
         $arrElements = array_fill(0, 5, 'test');
 
         foreach($arrElements as $key => $val) {
-            
+
             if( empty($id) || $this->isIdFilterMatch($key) ) {
 
                 $filePath = $this->getTempWorkingDirFile($fileBasePath .  $key);

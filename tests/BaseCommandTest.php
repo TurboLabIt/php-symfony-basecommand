@@ -90,7 +90,7 @@ class BaseCommandTest extends TestCase
     public function testDryRun()
     {
         $cmd        = $this->getCommandInstance();
-        $cmdReturn  = $this->runCommand($cmd, ["--" . BaseCommandTestInstance::CLI_OPT_DRY_RUN => true]);
+        $cmdReturn  = $this->runCommand($cmd, ["--" . Options::CLI_OPT_DRY_RUN => true]);
 
         $filePathAlways = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ALWAYS_WRITE);
         $this->assertFileExists($filePathAlways);
@@ -116,7 +116,7 @@ class BaseCommandTest extends TestCase
     public function testSendMessageBlocked()
     {
         $cmd        = $this->getCommandInstance();
-        $cmdReturn  = $this->runCommand($cmd, ["--" . BaseCommandTestInstance::CLI_OPT_BLOCK_MESSAGES => true]);
+        $cmdReturn  = $this->runCommand($cmd, ["--" . Options::CLI_OPT_BLOCK_MESSAGES => true]);
 
         $filePathAlways = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ALWAYS_SEND_MSG);
         $this->assertFileExists($filePathAlways);
@@ -146,7 +146,7 @@ class BaseCommandTest extends TestCase
         $processThisIdOnly = 3;
 
         $cmd        = $this->getCommandInstance();
-        $cmdReturn  = $this->runCommand($cmd, ["--" . BaseCommandTestInstance::CLI_OPT_SINGLE_ID => $processThisIdOnly]);
+        $cmdReturn  = $this->runCommand($cmd, ["--" . Options::CLI_OPT_SINGLE_ID => $processThisIdOnly]);
 
         $arrElements = array_fill(0, 5, 'test');
 

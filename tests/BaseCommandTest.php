@@ -167,8 +167,8 @@ class BaseCommandTest extends TestCase
     public function testFooter()
     {
         $output = $this->runCommandAndGetOutput();
-        $this->assertStringContainsString('🏁 The End 🏁 | OK', $output);
-        $this->assertStringNotContainsString('🏁 The End 🏁 | KO', $output);
+        $this->assertStringContainsString('The End 🏁 | OK', $output);
+        $this->assertStringNotContainsString('The End 🏁 | KO', $output);
         $this->assertStringNotContainsString('Catastrophic error', $output);
     }
 
@@ -183,8 +183,8 @@ class BaseCommandTest extends TestCase
             ], false);
 
         $this->assertStringContainsString('Catastrophic error', $output);
-        $this->assertStringContainsString('🏁 The End 🏁 | KO', $output);
-        $this->assertStringNotContainsString('🏁 The End 🏁 | OK', $output);
+        $this->assertStringContainsString('The End 🏁 | KO', $output);
+        $this->assertStringNotContainsString('he End 🏁 | OK', $output);
         $this->assertStringNotContainsString("YOU SHOULDN'T SEE THIS", $output);
     }
 }

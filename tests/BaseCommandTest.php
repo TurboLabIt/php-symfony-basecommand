@@ -3,7 +3,7 @@ namespace TurboLabIt\PhpSymfonyBasecommand\tests;
 
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
+use TurboLabIt\PhpSymfonyBasecommand\Service\Options;
 
 
 class BaseCommandTest extends TestCase
@@ -44,8 +44,8 @@ class BaseCommandTest extends TestCase
         $cmd = $this->getCommandInstance();
         $arrOptions = array_keys( $cmd->getDefinition()->getOptions() );
         $arrExpectedOpions = [
-            AbstractBaseCommand::CLI_OPT_DRY_RUN, AbstractBaseCommand::CLI_OPT_BLOCK_MESSAGES,
-            AbstractBaseCommand::CLI_OPT_SINGLE_ID
+            Options::CLI_OPT_DRY_RUN, Options::CLI_OPT_BLOCK_MESSAGES,
+            Options::CLI_OPT_SINGLE_ID
         ];
 
         foreach($arrExpectedOpions as $opt) {
@@ -68,7 +68,7 @@ class BaseCommandTest extends TestCase
     {
         $output = $this->runCommandAndGetOutput();
         $path   = $this->getTempWorkingDirFile(BaseCommandTestInstance::FILE_ALWAYS_WRITE);
-        
+
         $message = 'TempWorkingDirFile: ##' . $path . "##";
         $this->assertStringContainsString($message, $output);
     }
@@ -177,7 +177,7 @@ class BaseCommandTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        $output = 
+        $output =
             $this->runCommandAndGetOutput([
                 "--" . BaseCommandTestInstance::CLI_OPT_TRIGGER_ERROR => true
             ], false);

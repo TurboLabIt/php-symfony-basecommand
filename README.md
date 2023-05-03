@@ -32,8 +32,8 @@ require __DIR__ . '/vendor/autoload.php';
 $arrCmdArguments = [
     MyAppNameCommand::CLI_ARG_MY_ARG => $argv[1],
     // 💡 https://github.com/TurboLabIt/php-symfony-basecommand/blob/main/src/Traits/CliOptionsTrait.php
-    "--" . AbstractBaseCommand::CLI_OPT_DRY_RUN         => true,
-    //"--" . AbstractBaseCommand::CLI_OPT_BLOCK_MESSAGES  => true,
+    "--" . \TurboLabIt\PhpSymfonyBasecommand\Service\Options::CLI_OPT_DRY_RUN         => true,
+    //"--" . \TurboLabIt\PhpSymfonyBasecommand\Service\Options::CLI_OPT_BLOCK_MESSAGES  => true,
 ];
 
 ( new MyAppNameCommand() )

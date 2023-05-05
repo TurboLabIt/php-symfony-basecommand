@@ -115,7 +115,7 @@ class ItemStringifyTest extends TestCase
     {
         $item = new TestItemName();
         $slug = $this->o->slugify($item);
-        $this->assertEquals('getName-called', $slug);
+        $this->assertEquals('getname-called', $slug);
     }
 
 
@@ -123,16 +123,32 @@ class ItemStringifyTest extends TestCase
     {
         $item = new TestItemTitle();
         $slug = $this->o->slugify($item);
-        $this->assertEquals('getTitle-called', $slug);
+        $this->assertEquals('gettitle-called', $slug);
+    }
+
+
+    public function testSlugifyNameUpper()
+    {
+        $item = (new TestItemName())->setNameUpper();
+        $slug = $this->o->slugify($item);
+        $this->assertEquals('getname-called', $slug);
     }
 }
 
 
 class TestItemName
 {
+    protected string $name = TESTITEM_GETNAME;
+
     public function getName()
     {
-        return TESTITEM_GETNAME;
+        return $this->name;
+    }
+
+    public function setNameUpper() : self
+    {
+        $this->name = mb_strtoupper($this->name);
+        return $this;
     }
 }
 

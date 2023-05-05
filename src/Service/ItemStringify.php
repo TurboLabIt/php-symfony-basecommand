@@ -130,6 +130,8 @@ class ItemStringify
     {
         $text   = $this->buildItemName($item);
         $slug   = $this->slugger->slug($text)->toString();
+        $slug   = mb_strtolower($slug);
+
         return $slug;
     }
 }

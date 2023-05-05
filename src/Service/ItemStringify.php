@@ -1,9 +1,21 @@
 <?php
 namespace TurboLabIt\PhpSymfonyBasecommand\Service;
 
+use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 class ItemStringify
 {
+    protected SluggerInterface $slugger;
+
+
+    public function __construct(?SluggerInterface $slugger = null)
+    {
+        $this->slugger  = $slugger ?? (new AsciiSlugger());
+    }
+
+
     public function buildItemName($item) : string
     {
         $txtName = '';
@@ -111,5 +123,13 @@ class ItemStringify
         $text = str_ireplace( ["/", "\\"], $replaceWith, $text);
 
         return trim($text);
+    }
+
+
+    public function slugify($item) : string
+    {
+        $text   = $this->buildItemName($item);
+        $slug   = $this->slugger->slug($text);
+        return $text;
     }
 }

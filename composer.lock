@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "073f7c9a995c4ba034f353b598f5da0c",
+    "content-hash": "7c866b636f4465bbf1f9dc6d8fe0b31f",
     "packages": [
         {
             "name": "league/csv",
@@ -2553,6 +2553,7 @@
         "symfony/console": 0,
         "symfony/lock": 0,
         "league/csv": 0,
+        "symfony/string": 0,
         "phpunit/phpunit": 0
     },
     "prefer-stable": false,

@@ -85,7 +85,7 @@ class ItemStringifyTest extends TestCase
     }
 
 
-    public function testbuildItemPath()
+    public function testBuildItemPath()
     {
         $item   = new TestItemName();
         $key = time();
@@ -101,13 +101,27 @@ class ItemStringifyTest extends TestCase
     }
 
 
-    public function testbuildItemPathWithSubfolder()
+    public function testBuildItemPathWithSubfolder()
     {
         $item   = new TestItemName();
         $key = time();
         $result = $this->o->buildItemPath($item, $key, PATH_PREFOLDER_NAME, [PATH_FOLDER_1, PATH_FOLDER_2]);
         $expected = implode('/', [PATH_PREFOLDER_NAME, ("[$key] " . TESTITEM_GETNAME), PATH_FOLDER_1, PATH_FOLDER_2, '']);
         $this->assertEquals($expected, $result);
+    }
+
+
+    public function testSlugify()
+    {
+        $item       = new TestItemName();
+        $expected   = str_ireplace(["(", ")", " "], '-', TESTITEM_GETNAME);
+        $slug       = $this->o->slugify($item);
+        $this->assertEquals($expected, $slug);
+
+        $item       = new TestItemTitle();
+        $expected   = str_ireplace(["(", ")", " "], '-', TESTITEM_GETTITLE);
+        $slug       = $this->o->slugify($item);
+        $this->assertEquals($expected, $slug);
     }
 }
 

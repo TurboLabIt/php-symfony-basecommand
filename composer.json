@@ -20,7 +20,8 @@
         "php": "^8.1",
         "symfony/console": "@stable",
         "symfony/lock": "@stable",
-        "league/csv": "@stable"
+        "league/csv": "@stable",
+        "symfony/string": "@stable"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable"

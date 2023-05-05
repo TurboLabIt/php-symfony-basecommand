@@ -126,12 +126,44 @@ class ItemStringify
     }
 
 
-    public function slugify($item) : string
+    public function slugify($item, ?string $separator = null, bool $endWithSeparator = false) : string
     {
         $text   = $this->buildItemName($item);
         $slug   = $this->slugger->slug($text)->toString();
         $slug   = mb_strtolower($slug);
 
+        if($endWithSeparator) {
+
+            $separator  = $separator ?? DIRECTORY_SEPARATOR;
+            $slug .= $separator;
+        }
+
         return $slug;
     }
+
+
+    public function slugifyMultipleAsArray(iterable $arrItems, bool $reverse = false) : array
+    {
+        $arrSlugs = [];
+        foreach($arrItems as $item) {
+            $arrSlugs[] = $this->slugify($item);
+        }
+
+        if($reverse) {
+            $arrSlugs = array_reverse($arrSlugs, true);
+        }
+
+        return $arrSlugs;
+    }
+
+
+    public function slugifyMultipleAsPath(iterable $arrItems, ?string $separator = null, bool $endWithSeparator = true, bool $reverse = false) : string
+    {
+        $arrSlugs   = $this->slugifyMultipleAsArray($arrItems, $reverse);
+        $separator  = $separator ?? DIRECTORY_SEPARATOR;
+        $slugs      = implode($separator, $arrSlugs);
+
+        return $slugs;
+    }
+
 }

@@ -133,6 +133,15 @@ class ItemStringifyTest extends TestCase
         $slug = $this->o->slugify($item);
         $this->assertEquals('getname-called', $slug);
     }
+
+
+    public function testSlugifyMultipleAsPath()
+    {
+        $item   = (new TestItemName())->setNameUpper();
+        $item2  = (new TestItemTitle());
+        $path   = $this->o->slugifyMultipleAsPath([$item, $item2]);
+        $this->assertEquals('getname-called/gettitle-called', $path);
+    }
 }
 
 

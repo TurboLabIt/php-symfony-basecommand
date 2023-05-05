@@ -111,17 +111,19 @@ class ItemStringifyTest extends TestCase
     }
 
 
-    public function testSlugify()
+    public function testSlugifyName()
     {
-        $item       = new TestItemName();
-        $expected   = str_ireplace(["(", ")", " "], '-', TESTITEM_GETNAME);
-        $slug       = $this->o->slugify($item);
-        $this->assertEquals($expected, $slug);
+        $item = new TestItemName();
+        $slug = $this->o->slugify($item);
+        $this->assertEquals('getName-called', $slug);
+    }
 
-        $item       = new TestItemTitle();
-        $expected   = str_ireplace(["(", ")", " "], '-', TESTITEM_GETTITLE);
-        $slug       = $this->o->slugify($item);
-        $this->assertEquals($expected, $slug);
+
+    public function testSlugifyTitle()
+    {
+        $item = new TestItemTitle();
+        $slug = $this->o->slugify($item);
+        $this->assertEquals('getTitle-called', $slug);
     }
 }
 

@@ -6,7 +6,7 @@ APP_NAME=BaseCommand
 EXPECTED_USER=$(logname)
 
 fxHeader "🧪 ${APP_NAME} Test Runner"
-export XDEBUG_MODE=off
+#export XDEBUG_MODE=off
 
 # https://github.com/TurboLabIt/webstackup/tree/master/script/php/test-runner-package.sh
 source "${WEBSTACKUP_SCRIPT_DIR}php/test-runner-package.sh"

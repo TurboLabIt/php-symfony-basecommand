@@ -7,10 +7,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ItemStringify
 {
-    protected SluggerInterface $slugger;
+    protected $slugger;
 
 
-    public function __construct(?SluggerInterface $slugger = null)
+    public function __construct(/*protected SluggerInterface $slugger*/)
     {
         $this->slugger  = $slugger ?? (new AsciiSlugger());
     }
@@ -129,7 +129,7 @@ class ItemStringify
     public function slugify($item) : string
     {
         $text   = $this->buildItemName($item);
-        $slug   = $this->slugger->slug($text);
-        return $text;
+        $slug   = $this->slugger->slug($text)->toString();
+        return $slug;
     }
 }

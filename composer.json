@@ -21,7 +21,8 @@
         "symfony/console": "@stable",
         "symfony/lock": "@stable",
         "league/csv": "@stable",
-        "symfony/string": "@stable"
+        "symfony/string": "@stable",
+        "symfony/translation-contracts": "@stable"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable"

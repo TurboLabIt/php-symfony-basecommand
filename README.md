@@ -1,6 +1,6 @@
 # Symfony BaseCommand
 
-An extensions of Symfony Console Command to build your own CLI commands even faster.
+An extension of Symfony Console Command to build your own CLI commands better and faster.
 
 <p align="center">
   <img src="https://i.postimg.cc/FHBfDbJN/z-Shot-1673219261.png" />

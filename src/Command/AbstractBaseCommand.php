@@ -7,6 +7,7 @@ namespace TurboLabIt\BaseCommand\Command;
 
 use Symfony\Component\Console\Command\Command;
 use TurboLabIt\BaseCommand\Service\ItemStringify;
+use TurboLabIt\BaseCommand\Service\ProjectDir;
 use TurboLabIt\BaseCommand\Traits\BashFxDirectTrait;
 use TurboLabIt\BaseCommand\Traits\CliOptionsTrait;
 use TurboLabIt\BaseCommand\Traits\CliArgumentsTrait;
@@ -43,12 +44,11 @@ abstract class AbstractBaseCommand extends Command
 
     public function __construct(
         protected array $arrConfig = [],
-        protected ?BashFx $bashFx = null, protected ?ItemStringify $itemStringify = null
+        protected ?BashFx $bashFx = null, protected ?ItemStringify $itemStringify = null,
+        protected ?ProjectDir $projectDir = null
     )
     {
         parent::__construct();
-        $this->bashFx           = $bashFx ?? (new BashFx());
-        $this->itemStringify    = $itemStringify ?? (new ItemStringify());
     }
 
 

@@ -12,12 +12,7 @@ use TurboLabIt\BaseCommand\Command\AbstractBaseCommand;
 class BashFx
 {
     protected ?SymfonyStyle $io;
-
     protected \DateTime $startedAt;
-
-
-    public function __construct(protected ?ContainerBagInterface $parameterBag = null)
-    {}
 
 
     public function setIo(InputInterface $input, OutputInterface $output) : SymfonyStyle
@@ -126,31 +121,5 @@ class BashFx
 
         $this->io->block($message, null, 'fg=black;bg=' . $bgColor, ' ', true);
         return $result;
-    }
-
-
-    public function getProjectDir(array|string $subpath = '') : string
-    {
-        $projectDir = $this->parameterBag->get('kernel.project_dir') . DIRECTORY_SEPARATOR;
-
-        if( empty($subpath) ) {
-            return $projectDir;
-        }
-
-        if( is_string($subpath) ) {
-
-            $projectDir .= $subpath;
-
-        } elseif( is_array($subpath) ) {
-
-            $projectDir .= implode(DIRECTORY_SEPARATOR, $subpath);
-        }
-
-        $projectDir = trim($projectDir);
-
-        // adding trailing slash
-        $projectDir = rtrim($projectDir, '\\/') . DIRECTORY_SEPARATOR;
-
-        return $projectDir;
     }
 }

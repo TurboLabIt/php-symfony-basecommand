@@ -4,13 +4,14 @@ namespace TurboLabIt\BaseCommand\tests;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Tester\CommandTester;
+use TurboLabIt\BaseCommand\Service\BashFx;
 
 
 trait TestSuiteSupportFxTrait
 {
     protected function getCommandInstance() : BaseCommandTestInstance
     {
-        $cmd = new BaseCommandTestInstance();
+        $cmd = new BaseCommandTestInstance([], new BashFx());
         $cmd->setName('TestInstance99');
         return $cmd;
     }
@@ -49,7 +50,7 @@ trait TestSuiteSupportFxTrait
         if($assertCmdSuccess) {
             $cmd->assertCommandIsSuccessful();
         }
-        
+
         $output = $cmd->getDisplay();
         return $output;
     }
@@ -80,21 +81,21 @@ trait TestSuiteSupportFxTrait
         if ( !file_exists($dir) ) {
             return true;
         }
-    
+
         if ( !is_dir($dir) ) {
             return unlink($dir);
         }
-    
+
         foreach (scandir($dir) as $item) {
             if ($item == '.' || $item == '..') {
                 continue;
             }
-    
+
             if ( !$this->deleteDirectory($dir . DIRECTORY_SEPARATOR . $item) ) {
                 return false;
             }
         }
-    
+
         return rmdir($dir);
     }
 

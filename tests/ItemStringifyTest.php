@@ -1,6 +1,7 @@
 <?php
 namespace TurboLabIt\BaseCommand\tests;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use TurboLabIt\BaseCommand\Service\ItemStringify;
 
 const TESTITEM_GETNAME  = "getName() called";
@@ -18,7 +19,7 @@ class ItemStringifyTest extends TestCase
 
     protected function setUp() : void
     {
-        $this->o = new ItemStringify();
+        $this->o = new ItemStringify( new AsciiSlugger() );
     }
 
 

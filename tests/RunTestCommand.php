@@ -1,4 +1,6 @@
 <?php
+
+use TurboLabIt\BaseCommand\Service\BashFx;
 use TurboLabIt\BaseCommand\tests\BaseCommandTestInstance;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -12,7 +14,7 @@ $arrCmdArguments = [
     "--" . Options::CLI_OPT_SINGLE_ID       => 3,
 ];
 
-( new BaseCommandTestInstance() )
+( new BaseCommandTestInstance([], new BashFx()) )
     ->setName('TestInstance')
     ->run(new ArrayInput($arrCmdArguments), new ConsoleOutput());
 
@@ -21,6 +23,6 @@ $arrCmdArguments = [
     "--" . BaseCommandTestInstance::CLI_OPT_TRIGGER_ERROR => true
 ];
 
-( new BaseCommandTestInstance() )
+( new BaseCommandTestInstance([], new BashFx()) )
     ->setName('TestInstance')
     ->run(new ArrayInput($arrCmdArguments), new ConsoleOutput());

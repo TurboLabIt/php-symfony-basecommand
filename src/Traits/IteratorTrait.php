@@ -1,8 +1,8 @@
 <?php
-namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
+namespace TurboLabIt\BaseCommand\Traits;
 
 use Symfony\Component\Console\Helper\ProgressBar;
-use TurboLabIt\PhpSymfonyBasecommand\Service\ItemStringify;
+use TurboLabIt\BaseCommand\Service\ItemStringify;
 
 
 trait IteratorTrait
@@ -12,7 +12,7 @@ trait IteratorTrait
     protected bool $iteratorWarnIfDryRun        = true;
     protected bool $iteratorAutoSkip            = true;
 
-    protected ItemStringify $itemStringify;
+    protected ?ItemStringify $itemStringify;
 
 
     protected function processItems(iterable $items, callable $fxProcess, ?int $itemNum = null, ?callable $fxGenerateItemTitle = null, ?callable $fxAutoSkipLogic = null) : self

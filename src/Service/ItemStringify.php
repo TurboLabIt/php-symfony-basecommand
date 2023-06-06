@@ -1,19 +1,13 @@
 <?php
-namespace TurboLabIt\PhpSymfonyBasecommand\Service;
+namespace TurboLabIt\BaseCommand\Service;
 
-use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 class ItemStringify
 {
-    protected $slugger;
-
-
-    public function __construct(/*protected SluggerInterface $slugger*/)
-    {
-        $this->slugger  = $slugger ?? (new AsciiSlugger());
-    }
+    public function __construct(protected SluggerInterface $slugger)
+    { }
 
 
     public function buildItemName($item) : string

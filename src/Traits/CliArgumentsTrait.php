@@ -1,7 +1,5 @@
 <?php
-namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
-
-use Symfony\Component\Console\Input\InputArgument;
+namespace TurboLabIt\BaseCommand\Traits;
 
 
 trait CliArgumentsTrait

@@ -1,8 +1,8 @@
 <?php
-namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
+namespace TurboLabIt\BaseCommand\Traits;
 
 use Symfony\Component\Console\Input\InputOption;
-use TurboLabIt\PhpSymfonyBasecommand\Service\Options;
+use TurboLabIt\BaseCommand\Service\Options;
 
 
 trait CliOptionsTrait

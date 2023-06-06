@@ -1,7 +1,6 @@
 <?php
-namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
+namespace TurboLabIt\BaseCommand\Traits;
 
-use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
 
 trait HeaderFooterTrait
 {

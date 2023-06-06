@@ -1,12 +1,12 @@
 <?php
-namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
+namespace TurboLabIt\BaseCommand\Traits;
 
-use TurboLabIt\PhpSymfonyBasecommand\Service\BashFx;
+use TurboLabIt\BaseCommand\Service\BashFx;
 
 
 trait BashFxDirectTrait
 {
-    protected BashFx $bashFx;
+    protected ?BashFx $bashFx;
 
 
     protected function fxTitle(string $message) : self

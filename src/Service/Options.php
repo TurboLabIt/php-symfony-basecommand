@@ -1,5 +1,5 @@
 <?php
-namespace TurboLabIt\PhpSymfonyBasecommand\Service;
+namespace TurboLabIt\BaseCommand\Service;
 
 class Options
 {

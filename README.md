@@ -23,7 +23,7 @@ Use this template to generate a `MyApp.php' bootstrap file:
 ````php
 <?php
 use MyVendorName\MyApp\MyAppNameCommand;
-use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
+use TurboLabIt\BaseCommand\Command\AbstractBaseCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -32,8 +32,8 @@ require __DIR__ . '/vendor/autoload.php';
 $arrCmdArguments = [
     MyAppNameCommand::CLI_ARG_MY_ARG => $argv[1],
     // 💡 https://github.com/TurboLabIt/php-symfony-basecommand/blob/main/src/Traits/CliOptionsTrait.php
-    "--" . \TurboLabIt\PhpSymfonyBasecommand\Service\Options::CLI_OPT_DRY_RUN         => true,
-    //"--" . \TurboLabIt\PhpSymfonyBasecommand\Service\Options::CLI_OPT_BLOCK_MESSAGES  => true,
+    "--" . \TurboLabIt\BaseCommand\Service\Options::CLI_OPT_DRY_RUN         => true,
+    //"--" . \TurboLabIt\BaseCommand\Service\Options::CLI_OPT_BLOCK_MESSAGES  => true,
 ];
 
 ( new MyAppNameCommand() )
@@ -80,7 +80,7 @@ You can now use this template to build your own CLI app.
 <?php declare(strict_types=1);
 namespace App\Command;
 
-use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
+use TurboLabIt\BaseCommand\Command\AbstractBaseCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;

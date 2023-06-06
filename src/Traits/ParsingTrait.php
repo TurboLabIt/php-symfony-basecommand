@@ -1,5 +1,5 @@
 <?php
-namespace TurboLabIt\PhpSymfonyBasecommand\Traits;
+namespace TurboLabIt\BaseCommand\Traits;
 
 
 trait ParsingTrait

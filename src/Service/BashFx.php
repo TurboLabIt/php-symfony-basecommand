@@ -1,11 +1,12 @@
 <?php
-namespace TurboLabIt\PhpSymfonyBasecommand\Service;
+namespace TurboLabIt\BaseCommand\Service;
 
 use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use TurboLabIt\BaseCommand\Command\AbstractBaseCommand;
 
 
 class BashFx
@@ -15,15 +16,8 @@ class BashFx
     protected \DateTime $startedAt;
 
 
-    public function __construct(
-        protected ?InputInterface $input = null, protected ?OutputInterface $output = null,
-        protected ?ContainerBagInterface $parameterBag = null
-    )
-    {
-        if( !empty($input) && !empty($output) ) {
-            $this->setIo($input, $output);
-        }
-    }
+    public function __construct(protected ?ContainerBagInterface $parameterBag = null)
+    {}
 
 
     public function setIo(InputInterface $input, OutputInterface $output) : SymfonyStyle

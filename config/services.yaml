@@ -1,3 +1,4 @@
 services:
     TurboLabIt\BaseCommand\Service\BashFx:
         autowire: true
+        public: true

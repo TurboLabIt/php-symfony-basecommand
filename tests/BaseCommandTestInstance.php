@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
-namespace TurboLabIt\PhpSymfonyBasecommand\tests;
+namespace TurboLabIt\BaseCommand\tests;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
-use TurboLabIt\PhpSymfonyBasecommand\Service\Options;
+use TurboLabIt\BaseCommand\Command\AbstractBaseCommand;
+use TurboLabIt\BaseCommand\Service\Options;
 
 
 #[AsCommand(name: 'TestInstance82')]

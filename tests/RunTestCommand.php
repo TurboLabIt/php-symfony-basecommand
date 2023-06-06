@@ -1,8 +1,8 @@
 <?php
-use TurboLabIt\PhpSymfonyBasecommand\tests\BaseCommandTestInstance;
+use TurboLabIt\BaseCommand\tests\BaseCommandTestInstance;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use \TurboLabIt\PhpSymfonyBasecommand\Service\Options;
+use \TurboLabIt\BaseCommand\Service\Options;
 
 require __DIR__.'/../vendor/autoload.php';
 

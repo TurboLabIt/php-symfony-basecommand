@@ -1,7 +1,7 @@
 <?php
-namespace TurboLabIt\PhpSymfonyBasecommand\tests;
+namespace TurboLabIt\BaseCommand\tests;
 use PHPUnit\Framework\TestCase;
-use TurboLabIt\PhpSymfonyBasecommand\Service\ItemStringify;
+use TurboLabIt\BaseCommand\Service\ItemStringify;
 
 const TESTITEM_GETNAME  = "getName() called";
 const TESTITEM_GETTITLE = "getTitle() called";

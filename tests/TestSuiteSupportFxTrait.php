@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace TurboLabIt\PhpSymfonyBasecommand\tests;
+namespace TurboLabIt\BaseCommand\tests;
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;

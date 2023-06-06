@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
-namespace TurboLabIt\PhpSymfonyBasecommand\tests;
+namespace TurboLabIt\BaseCommand\tests;
 
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use TurboLabIt\PhpSymfonyBasecommand\Service\Options;
+use TurboLabIt\BaseCommand\Service\Options;
 
 
 class BaseCommandTest extends TestCase

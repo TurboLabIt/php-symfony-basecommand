@@ -10,7 +10,6 @@ class BaseCommandBundle extends AbstractBundle
 {
     public function loadExtension(array $config, ContainerConfigurator $containerConfigurator, ContainerBuilder $containerBuilder): void
     {
-        die("STOP FUUUUCK!!");
         $containerConfigurator->import('../config/services.xml');
     }
 }

@@ -26,6 +26,7 @@ use TurboLabIt\BaseCommand\Service\BashFx;
 abstract class AbstractBaseCommand extends Command
 {
     use BashFxDirectTrait;
+    use ProjectDirDirectTrait;
     use CliOptionsTrait;
     use CliArgumentsTrait;
     use HeaderFooterTrait;

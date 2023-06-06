@@ -34,4 +34,9 @@ trait BashFxDirectTrait
         $this->bashFx->fxWarning($message);
         return $this;
     }
+
+    public function getProjectDir(array|string $subpath = '') : string
+    {
+        return $this->bashFx->getProjectDir($subpath);
+    }
 }

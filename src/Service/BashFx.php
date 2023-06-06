@@ -10,18 +10,16 @@ use TurboLabIt\PhpSymfonyBasecommand\Command\AbstractBaseCommand;
 
 class BashFx
 {
-    protected ?InputInterface $input;
-    protected ?OutputInterface $output;
     protected ?SymfonyStyle $io;
 
     protected \DateTime $startedAt;
 
 
-    public function __construct(?InputInterface $input = null, ?OutputInterface $output = null)
+    public function __construct(
+        protected ?InputInterface $input = null, protected ?OutputInterface $output = null,
+        protected ?ContainerBagInterface $parameterBag = null
+    )
     {
-        $this->input    = $input;
-        $this->output   = $output;
-
         if( !empty($input) && !empty($output) ) {
             $this->setIo($input, $output);
         }
@@ -134,5 +132,31 @@ class BashFx
 
         $this->io->block($message, null, 'fg=black;bg=' . $bgColor, ' ', true);
         return $result;
+    }
+
+
+    public function getProjectDir(array|string $subpath = '') : string
+    {
+        $projectDir = $this->parameterBag->get('kernel.project_dir') . DIRECTORY_SEPARATOR;
+
+        if( empty($subpath) ) {
+            return $projectDir;
+        }
+
+        if( is_string($subpath) ) {
+
+            $projectDir .= $subpath;
+
+        } elseif( is_array($subpath) ) {
+
+            $projectDir .= implode(DIRECTORY_SEPARATOR, $subpath);
+        }
+
+        $projectDir = trim($projectDir);
+
+        // adding trailing slash
+        $projectDir = rtrim($projectDir, '\\/') . DIRECTORY_SEPARATOR;
+
+        return $projectDir;
     }
 }

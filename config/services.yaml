@@ -2,3 +2,6 @@ services:
     TurboLabIt\BaseCommand\Service\BashFx:
         autowire: true
         public: true
+    TurboLabIt\BaseCommand\Service\ProjectDir:
+        autowire: true
+        public: true

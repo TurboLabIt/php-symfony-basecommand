@@ -17,6 +17,6 @@ trait ProjectDirDirectTrait
 
     public function createVarDir(array|string $subpath = '') : string
     {
-        return $this->projectDir->getProjectDir($subpath);
+        return $this->projectDir->createVarDir($subpath);
     }
 }

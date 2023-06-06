@@ -6,7 +6,6 @@
 namespace TurboLabIt\BaseCommand\Command;
 
 use Symfony\Component\Console\Command\Command;
-use TurboLabIt\BaseCommand\Service\ItemStringify;
 use TurboLabIt\BaseCommand\Traits\BashFxDirectTrait;
 use TurboLabIt\BaseCommand\Traits\ProjectDirDirectTrait;
 use TurboLabIt\BaseCommand\Traits\CliOptionsTrait;
@@ -21,6 +20,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TurboLabIt\BaseCommand\Service\BashFx;
+use TurboLabIt\BaseCommand\Service\ItemStringify;
+use TurboLabIt\BaseCommand\Service\ProjectDir;
 
 
 abstract class AbstractBaseCommand extends Command

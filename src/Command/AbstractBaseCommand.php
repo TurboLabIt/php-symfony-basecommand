@@ -7,8 +7,8 @@ namespace TurboLabIt\BaseCommand\Command;
 
 use Symfony\Component\Console\Command\Command;
 use TurboLabIt\BaseCommand\Service\ItemStringify;
-use TurboLabIt\BaseCommand\Service\ProjectDir;
 use TurboLabIt\BaseCommand\Traits\BashFxDirectTrait;
+use TurboLabIt\BaseCommand\Traits\ProjectDirDirectTrait;
 use TurboLabIt\BaseCommand\Traits\CliOptionsTrait;
 use TurboLabIt\BaseCommand\Traits\CliArgumentsTrait;
 use TurboLabIt\BaseCommand\Traits\HeaderFooterTrait;

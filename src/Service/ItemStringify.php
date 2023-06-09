@@ -7,7 +7,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class ItemStringify
 {
-    public function __construct(protected SluggerInterface $slugger)
+    public function __construct(protected ?SluggerInterface $slugger = null)
     {
         $this->slugger = $slugger ?? (new AsciiSlugger());
     }

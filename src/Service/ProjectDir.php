@@ -34,12 +34,24 @@ class ProjectDir
 
         return $projectDir;
     }
-    
-    
-    
 
 
-    public function createVarDir(array|string $subpath = '') : string
+    public function getProjectDirFromFile(array|string $filePath) : string
+    {
+        if( is_string($filePath) ) {
+            $filePath = explode(DIRECTORY_SEPARATOR, $filePath);
+        }
+
+        $folders    = array_slice($filePath, 0, -1);
+        $filename   = array_slice($filePath, -1);
+        $filename   = reset($filename);
+
+        $path = $this->getProjectDir($folders) . $filename;
+        return $path;
+    }
+    
+
+    public function getVarDir(array|string $subpath = '') : string
     {
         if( is_array($subpath) ) {
             $subpath = implode(DIRECTORY_SEPARATOR, $subpath);
@@ -58,6 +70,28 @@ class ProjectDir
         $subpath = 'var' . DIRECTORY_SEPARATOR . $subpath;
 
         $path = $this->getProjectDir($subpath);
+        return $path;
+    }
+
+
+    public function getVarDirFromFilePath(array|string $filePath) : string
+    {
+        if( is_string($filePath) ) {
+            $filePath = explode(DIRECTORY_SEPARATOR, $filePath);
+        }
+
+        $folders    = array_slice($filePath, 0, -1);
+        $filename   = array_slice($filePath, -1);
+        $filename   = reset($filename);
+
+        $path = $this->getVarDir($folders) . $filename;
+        return $path;
+    }
+
+
+    public function createVarDir(array|string $subpath = '') : string
+    {
+        $path = $this->getVarDir($subpath);
 
         if( !is_dir($path) ) {
             mkdir($path, 0777, true);
@@ -69,15 +103,9 @@ class ProjectDir
 
     public function createVarDirFromFilePath(array|string $filePath) : string
     {
-        if( is_string($filePath) ) {
-            $filePath = explode(DIRECTORY_SEPARATOR, $filePath);
-        }
-
-        $folders    = array_slice($filePath, 0, -1);
-        $filename   = array_slice($filePath, -1);
-        $filename   = reset($filename);
-
-        $path       = $this->createVarDir($folders) . $filename;
+        $path = $this->getVarDirFromFilePath($filePath);
+        $path = basename($path);
+        $path = $this->createVarDir($path);
         return $path;
     }
 }

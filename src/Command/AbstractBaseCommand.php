@@ -51,6 +51,8 @@ abstract class AbstractBaseCommand extends Command
     )
     {
         parent::__construct();
+        $this->bashFx           = $bashFx ?? (new BashFx());
+        $this->itemStringify    = $itemStringify ?? (new ItemStringify());
     }
 
 

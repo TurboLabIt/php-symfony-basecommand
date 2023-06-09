@@ -67,9 +67,9 @@ trait CsvHandlerTrait
     }
 
 
-    protected function writeCsvToVarArrayPath(array $arrFilePath, array $arrDataToWrite, bool $silent = false, string $delimiter = ',') : self
+    protected function writeCsvToVarPath(array|string $relativeFilePath, array $arrDataToWrite, bool $silent = false, string $delimiter = ',') : self
     {
-        $filePath = $this->projectDir->createVarDirFromFilePath($arrFilePath);
+        $filePath = $this->projectDir->createVarDirFromFilePath($relativeFilePath);
         return $this->writeCsv($filePath, $arrDataToWrite, $silent, $delimiter);
     }
 }

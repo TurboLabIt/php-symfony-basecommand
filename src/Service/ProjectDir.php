@@ -62,4 +62,19 @@ class ProjectDir
 
         return $path;
     }
+
+
+    public function createVarDirFromFilePath(array|string $filePath) : string
+    {
+        if( is_string($filePath) ) {
+            $filePath = explode(DIRECTORY_SEPARATOR, $filePath);
+        }
+
+        $folders    = array_slice($filePath, 0, -1);
+        $filename   = array_slice($filePath, -1);
+        $filename   = reset($filename);
+
+        $path       = $this->createVarDir($folders) . $filename;
+        return $path;
+    }
 }

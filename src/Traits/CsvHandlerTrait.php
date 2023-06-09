@@ -69,34 +69,7 @@ trait CsvHandlerTrait
 
     protected function writeCsvToVarArrayPath(array $arrFilePath, array $arrDataToWrite, bool $silent = false, string $delimiter = ',') : self
     {
-        $arrPath    = array_merge(['var'], $arrFilePath);
-        $filePath   = $this->getPathFile($arrPath, true);
-
+        $filePath = $this->projectDir->createVarDirFromFilePath($arrFilePath);
         return $this->writeCsv($filePath, $arrDataToWrite, $silent, $delimiter);
-    }
-
-
-    protected function getPathFile(array $arrSubPath, bool $autoCreate = false) : string
-    {
-        $fileName   = array_pop($arrSubPath);
-        $dirPath    = $this->getPathDir($arrSubPath,  $autoCreate);
-        $path       = $dirPath . $fileName;
-
-        return $path;
-    }
-
-
-    protected function getPathDir(array $arrSubPath, bool $autoCreate = false) : string
-    {
-        $path =
-            $this->parameterBag->get('kernel.project_dir') . DIRECTORY_SEPARATOR .
-            implode(DIRECTORY_SEPARATOR, $arrSubPath);
-
-        if( !is_dir($path) && $autoCreate ) {
-            mkdir($path, 0777, true);
-        }
-
-        $path .= DIRECTORY_SEPARATOR;
-        return $path;
     }
 }

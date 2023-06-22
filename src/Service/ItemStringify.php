@@ -19,7 +19,7 @@ class ItemStringify
 
         if( is_object($item) ) {
 
-            foreach(['getName', 'getTitle'] as $method) {
+            foreach(['getName', 'getTitle', 'getValue'] as $method) {
                 if( method_exists($item, $method) ) {
                     $txtName = $item->$method();
                     break;
@@ -28,7 +28,7 @@ class ItemStringify
 
         } elseif( is_array($item) ) {
 
-            foreach(['name', 'Name', 'title', 'Title'] as $key) {
+            foreach(['name', 'Name', 'title', 'Title', 'value', 'Value'] as $key) {
                 if( !empty($item[$key]) ) {
                     $txtName = $item[$key];
                     break;

@@ -94,7 +94,17 @@ trait CliOptionsTrait
     }
 
 
+    protected function getCliId() : ?mixed
+    {
+        if( !$this->allowIdOpt ) {
+            return null;
+        }
 
+        $idOpt = $this->getCliOption(Options::CLI_OPT_SINGLE_ID);
+        return $idOpt;
+    }
+
+    
     protected function isDryRun(bool $silent = false) : bool
     {
         if( !$this->allowDryRunOpt ) {

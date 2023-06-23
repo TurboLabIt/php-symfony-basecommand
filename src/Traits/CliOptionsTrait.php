@@ -94,7 +94,7 @@ trait CliOptionsTrait
     }
 
 
-    protected function getCliId() : ?mixed
+    protected function getCliId() : mixed
     {
         if( !$this->allowIdOpt ) {
             return null;

@@ -50,7 +50,7 @@ trait CliOptionsTrait
     protected bool $langOptIsMandatory = false;
 
 
-    protected function configure()
+    protected function configure() : void
     {
         parent::configure();
 

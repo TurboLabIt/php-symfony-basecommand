@@ -18,7 +18,7 @@ composer init
 
 Install the package (see: [Install it with composer](https://github.com/TurboLabIt/php-symfony-basecommand#-install-it-with-composer))
 
-Use this template to generate a `MyApp.php' bootstrap file:
+Use this template to generate a `MyApp.php` bootstrap file:
 
 ````php
 <?php

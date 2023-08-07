@@ -156,7 +156,7 @@ trait CliOptionsTrait
     }
 
 
-    protected function isIdFilterMatch(int $id, bool $silent = false) : bool
+    protected function isIdFilterMatch($id, bool $silent = false) : bool
     {
         if( !$this->allowIdOpt ) {
             return true;

@@ -37,6 +37,8 @@ abstract class AbstractBaseCommand extends Command
     use IteratorTrait;
     use ParsingTrait;
 
+    protected Dates $dates;
+
     protected InputInterface $input;
     protected OutputInterface $output;
     protected SymfonyStyle $io;
@@ -53,6 +55,7 @@ abstract class AbstractBaseCommand extends Command
         parent::__construct();
         $this->bashFx           = $bashFx ?? (new BashFx());
         $this->itemStringify    = $itemStringify ?? (new ItemStringify());
+        $this->dates            = new Dates();
     }
 
 

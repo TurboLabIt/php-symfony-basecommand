@@ -49,8 +49,7 @@ abstract class AbstractBaseCommand extends Command
 
     public function __construct(
         protected array $arrConfig = [],
-        protected ?BashFx $bashFx = null, protected ?ItemStringify $itemStringify = null,
-        protected ?ProjectDir $projectDir = null
+        protected ?BashFx $bashFx = null, protected ?ItemStringify $itemStringify = null
     )
     {
         parent::__construct();

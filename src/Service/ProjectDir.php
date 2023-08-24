@@ -103,9 +103,11 @@ class ProjectDir
 
     public function createVarDirFromFilePath(array|string $filePath) : string
     {
-        $path = $this->getVarDirFromFilePath($filePath);
-        $path = basename($path);
-        $path = $this->createVarDir($path);
-        return $path;
+        $dirPath = dirname($filePath);
+        $this->createVarDir($dirPath);
+
+        $absoluteFilePath = $this->getVarDirFromFilePath($filePath);
+
+        return $absoluteFilePath;
     }
 }

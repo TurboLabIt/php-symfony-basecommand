@@ -85,6 +85,8 @@ trait CliOptionsTrait
         if( $this->langOptIsMandatory && empty($this->getCliOption(Options::CLI_OPT_LANGUAGE)) ) {
             $this->endWithError('The --' . Options::CLI_OPT_LANGUAGE . "=... option is MANDATORY");
         }
+
+        return $this;
     }
 
 
@@ -104,7 +106,7 @@ trait CliOptionsTrait
         return $idOpt;
     }
 
-    
+
     protected function isDryRun(bool $silent = false) : bool
     {
         if( !$this->allowDryRunOpt ) {

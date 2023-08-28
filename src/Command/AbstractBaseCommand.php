@@ -6,6 +6,8 @@
 namespace TurboLabIt\BaseCommand\Command;
 
 use Symfony\Component\Console\Command\Command;
+use TurboLabIt\BaseCommand\Service\Mailer;
+use TurboLabIt\BaseCommand\Service\Options;
 use TurboLabIt\BaseCommand\Traits\BashFxDirectTrait;
 use TurboLabIt\BaseCommand\Traits\ProjectDirDirectTrait;
 use TurboLabIt\BaseCommand\Traits\CliOptionsTrait;
@@ -74,7 +76,7 @@ abstract class AbstractBaseCommand extends Command
         $this
             ->autoInit()
             ->checkOptions()
-        ;
+            ->checkEmailSending();
 
         return static::SUCCESS;
         // 💡 the extending class must `return $this->showEnd();`
@@ -84,5 +86,34 @@ abstract class AbstractBaseCommand extends Command
     protected function autoInit() : self
     {
         return $this;
+    }
+
+
+    protected function checkEmailSending() : static
+    {
+        if( $this->allowBlockMessagesOpt == false ) {
+            return $this;
+        }
+
+        $this->fxTitle("📨 Email status...");
+
+        $isTliMailerInstance = !empty($this->mailer) && $this->mailer instanceof Mailer;
+
+        if( $this->isSendingMessageAllowed() ) {
+
+            if($isTliMailerInstance) {
+                $this->mailer->block(false);
+            }
+
+            return $this->fxWarning("📨🔥 Emails are HOT!");
+        }
+
+        if($isTliMailerInstance) {
+
+            $this->mailer->block(true);
+            return $this->fxInfo("Email are blocked");
+        }
+
+        return $this->fxInfo("Email SHOULD be blocked");
     }
 }

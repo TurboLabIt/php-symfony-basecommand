@@ -1,0 +1,2 @@
+paths:
+    '%kernel.project_dir%/src/Resources/views': BaseCommand

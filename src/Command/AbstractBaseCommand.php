@@ -99,7 +99,7 @@ abstract class AbstractBaseCommand extends Command
 
         $isTliMailerInstance = !empty($this->mailer) && $this->mailer instanceof Mailer;
 
-        if( $this->isSendingMessageAllowed() ) {
+        if( $this->isSendingMessageAllowed(true) ) {
 
             if($isTliMailerInstance) {
                 $this->mailer->block(false);

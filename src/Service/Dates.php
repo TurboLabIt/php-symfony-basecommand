@@ -30,4 +30,23 @@ class Dates
 
         return $oDate;
     }
+
+
+    public function buildDateFromDDMMYYYY(?string $date) : ?\DateTime
+    {
+        // input example: 23/01/1982
+        if( empty($date) ) {
+            return null;
+        }
+
+        $oDate = \DateTime::createFromFormat('d/m/Y', $date);
+
+        if( empty($oDate) ) {
+            return null;
+        }
+
+        $oDate->setTime(0, 0);
+
+        return $oDate;
+    }
 }

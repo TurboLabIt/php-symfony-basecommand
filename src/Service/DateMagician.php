@@ -7,10 +7,13 @@ class DateMagician
     // https://unicode-org.github.io/icu/userguide/format_parse/datetime/#date-field-symbol-table
 
     // Monday 18 September 2023
-    const INTL_FORMAT_IT_DATE_COMPLETE    = 'EEEE dd MMMM yyyy';
+    const INTL_FORMAT_IT_DATE_COMPLETE        = 'EEEE dd MMMM yyyy';
 
     // 18 September
-    const INTL_FORMAT_IT_DATE_DAY_MONTH    = 'dd MMMM';
+    const INTL_FORMAT_IT_DATE_DAY_MONTH        = 'dd MMMM';
+
+    //
+    const INTL_FORMAT_IT_DATE_DAY_MONTH_TIME    = 'dd MMMM HH:mm';
 
 
     public static string $locale    = 'it_IT';

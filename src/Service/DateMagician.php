@@ -6,8 +6,11 @@ class DateMagician
 {
     // https://unicode-org.github.io/icu/userguide/format_parse/datetime/#date-field-symbol-table
 
-    // monday 18 September 2023
-    const INTL_FORMAT_IT_DATE_COMPLETE  = 'EEEE dd MMMM yyyy';
+    // Monday 18 September 2023
+    const INTL_FORMAT_IT_DATE_COMPLETE    = 'EEEE dd MMMM yyyy';
+
+    // 18 September
+    const INTL_FORMAT_IT_DATE_DAY_MONTH    = 'dd MMMM';
 
 
     public static string $locale    = 'it_IT';
@@ -34,8 +37,7 @@ class DateMagician
         }
 
         // timezone conversion: from UTC to local
-        $txtTimeZoneDefault = date_default_timezone_get();
-        $tzDefault = new \DateTimeZone($txtTimeZoneDefault);
+        $tzDefault = new \DateTimeZone(static::$timeZone);
         $oDate->setTimezone($tzDefault);
 
         return $oDate;

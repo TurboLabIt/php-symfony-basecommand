@@ -6,6 +6,7 @@
 namespace TurboLabIt\BaseCommand\Command;
 
 use Symfony\Component\Console\Command\Command;
+use TurboLabIt\BaseCommand\Service\DateMagician;
 use TurboLabIt\BaseCommand\Service\Mailer;
 use TurboLabIt\BaseCommand\Service\Options;
 use TurboLabIt\BaseCommand\Traits\BashFxDirectTrait;
@@ -24,7 +25,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TurboLabIt\BaseCommand\Service\BashFx;
 use TurboLabIt\BaseCommand\Service\ItemStringify;
 use TurboLabIt\BaseCommand\Service\ProjectDir;
-use TurboLabIt\BaseCommand\Service\Dates;
 
 
 abstract class AbstractBaseCommand extends Command
@@ -40,7 +40,7 @@ abstract class AbstractBaseCommand extends Command
     use IteratorTrait;
     use ParsingTrait;
 
-    protected Dates $dates;
+    protected DateMagician $dateMagician;
 
     protected InputInterface $input;
     protected OutputInterface $output;
@@ -57,7 +57,7 @@ abstract class AbstractBaseCommand extends Command
         parent::__construct();
         $this->bashFx           = $bashFx ?? (new BashFx());
         $this->itemStringify    = $itemStringify ?? (new ItemStringify());
-        $this->dates            = new Dates();
+        $this->dateMagician     = new DateMagician();
     }
 
 
@@ -99,7 +99,7 @@ abstract class AbstractBaseCommand extends Command
 
         $isTliMailerInstance = !empty($this->mailer) && $this->mailer instanceof Mailer;
 
-        if( $this->isSendingMessageAllowed() ) {
+        if( $this->isSendingMessageAllowed(true) ) {
 
             if($isTliMailerInstance) {
                 $this->mailer->block(false);

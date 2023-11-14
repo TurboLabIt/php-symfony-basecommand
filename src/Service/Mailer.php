@@ -154,6 +154,11 @@ class Mailer
 
     public function getEmail() : TemplatedEmail
     {
+        /**
+         * 💡
+         * $templatePath   = $mailer->getEmail()->getHtmlTemplate();
+         * $arrParam       = $mailer->getEmail()->getContext();
+         */
         return $this->email;
     }
 }

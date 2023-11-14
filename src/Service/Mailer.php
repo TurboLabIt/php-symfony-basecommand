@@ -150,4 +150,10 @@ class Mailer
         $result = $this->mailer->send($this->email);
         return $result;
     }
+
+
+    public function getEmail() : TemplatedEmail
+    {
+        return $this->email;
+    }
 }

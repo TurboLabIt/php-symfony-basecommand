@@ -75,16 +75,16 @@ class Mailer
                     continue;
                 }
 
-                $toAddress = new Address($toAddress);
+                $toAddress = new Address($toAddress, $toName);
 
                 if( !$firstToSet ) {
 
-                    $this->email->to($toAddress, $toName);
+                    $this->email->to($toAddress);
                     $firstToSet = true;
                     continue;
                 }
 
-                $this->email->addTo($toAddress, $toName);
+                $this->email->addTo($toAddress);
             }
 
         } else {

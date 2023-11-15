@@ -115,26 +115,24 @@ class Mailer
         $subject        = empty($subjectPrefix) ? $subjectUnprefixed : ($subjectPrefix . " " . $subjectUnprefixed);
         $this->email->subject($subject);
 
+        $arrTemplateParams = [
+            "date" => date('Y-m-d H:i:s'),
+        ];
+
+        // URL
         if( !empty($this->arrConfig["siteUrl"]) ) {
 
-            $siteUrl = $this->arrConfig["siteUrl"];
+            $arrTemplateParams["siteUrl"] = $this->arrConfig["siteUrl"];
 
         } else if( !empty($this->arrConfig["siteDomain"]) ) {
 
-            $siteUrl = 'https://' . $this->arrConfig["siteDomain"];
-
-        } else {
-
-            $siteUrl = null;
+            $arrTemplateParams["siteUrl"] = 'https://' . $this->arrConfig["siteDomain"];
         }
 
         // body
         $this->email
             ->htmlTemplate($templateName)
-            ->context(array_merge($arrTemplateData, [
-                "date"      => date('Y-m-d H:i:s'),
-                "siteUrl"   => $siteUrl
-            ]));
+            ->context( array_merge($arrTemplateData, $arrTemplateParams) );
 
         return $this;
     }

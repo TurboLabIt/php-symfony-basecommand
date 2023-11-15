@@ -119,15 +119,15 @@ class Mailer
             "date" => date('Y-m-d H:i:s'),
         ];
 
-        // URL
-        if( !empty($this->arrConfig["siteUrl"]) ) {
-
-            $arrTemplateParams["siteUrl"] = $this->arrConfig["siteUrl"];
-
-        } else if( !empty($this->arrConfig["siteDomain"]) ) {
-
-            $arrTemplateParams["siteUrl"] = 'https://' . $this->arrConfig["siteDomain"];
-        }
+        /**
+         * 💡 siteUrl is not needed!
+         * .env: APP_SITE_DOMAIN=www.example.com
+         * services.yaml:
+         *   parameters:
+         *     ## Make the domain and site URL available to CLI Commands
+         *     router.request_context.host: '%env(APP_SITE_DOMAIN)%'
+         *     router.request_context.scheme: 'https'
+         */
 
         // body
         $this->email

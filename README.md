@@ -110,7 +110,7 @@ class MyCommand extends AbstractBaseCommand
     }
 
 
-    protected function configure()
+    protected function configure() : void
     {
         parent::configure();
         // 💡 add your own specific option(s)

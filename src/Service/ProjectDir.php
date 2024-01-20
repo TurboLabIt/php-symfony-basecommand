@@ -10,6 +10,7 @@ class ProjectDir
     {}
 
 
+    //<editor-fold defaultstate="collapsed" desc="*** PROJECT DIR ***">
     public function getProjectDir(array|string $subpath = '') : string
     {
         $projectDir = $this->parameterBag->get('kernel.project_dir') . DIRECTORY_SEPARATOR;
@@ -49,8 +50,10 @@ class ProjectDir
         $path = $this->getProjectDir($folders) . $filename;
         return $path;
     }
-    
+    //</editor-fold>
 
+
+    //<editor-fold defaultstate="collapsed" desc="*** VAR DIR ***">
     public function getVarDir(array|string $subpath = '') : string
     {
         if( is_array($subpath) ) {
@@ -110,4 +113,24 @@ class ProjectDir
 
         return $absoluteFilePath;
     }
+    //</editor-fold>
+
+
+    //<editor-fold defaultstate="collapsed" desc="*** PUBLIC DIR ***">
+    public function getPublicDirFromFilePath(array|string $filePath) : string
+    {
+        $result = $this->getProjectDir('public');
+
+        if( is_array($filePath) ) {
+
+            $result .= implode(DIRECTORY_SEPARATOR, $filePath);
+
+        } elseif( is_string($filePath) ) {
+
+            $result .= $filePath;
+        }
+
+        return $result;
+    }
+    //</editor-fold>
 }

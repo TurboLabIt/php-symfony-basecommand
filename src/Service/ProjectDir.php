@@ -106,6 +106,7 @@ class ProjectDir
 
     public function createVarDirFromFilePath(array|string $filePath) : string
     {
+        $filePath = is_array($filePath) ? implode(DIRECTORY_SEPARATOR, $filePath) : $filePath;
         $dirPath = dirname($filePath);
         $this->createVarDir($dirPath);
 

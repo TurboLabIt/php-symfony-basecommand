@@ -1,18 +1,20 @@
 <?php
 namespace TurboLabIt\BaseCommand\Service;
 
+use Symfony\Component\Mailer\Exception\TransportException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
-use TurboLabIt\BaseCommand\Service\ProjectDir;
 
 
 class Mailer
 {
     protected bool $isBlocked = true;
     protected TemplatedEmail $email;
+    protected array $arrReport = [];
 
 
     public function __construct(protected MailerInterface $mailer, protected ProjectDir $projectDir, protected array $arrConfig = [])
@@ -153,14 +155,25 @@ class Mailer
     }
 
 
-    public function send()
+    public function send() : void
     {
+        $arrRecipients = $this->email->getTo();
+
         if( $this->isBlocked ) {
-            return false;
+
+            $this->addReportEntry($arrRecipients, false, 'isBlocked');
+            return;
         }
 
-        $result = $this->mailer->send($this->email);
-        return $result;
+        try {
+            $this->mailer->send($this->email);
+            $this->addReportEntry($arrRecipients, false);
+
+        } catch (TransportExceptionInterface $ex) {
+
+            $this->addReportEntry($arrRecipients, false, $ex->getMessage());
+            throw $ex;
+        }
     }
 
 
@@ -172,5 +185,30 @@ class Mailer
          * $arrParam       = $mailer->getEmail()->getContext();
          */
         return $this->email;
+    }
+
+
+    protected function addReportEntry(array $arrRecipients, bool $success, ?string $message = null) : void
+    {
+        $arrRecipientsAsString = [];
+        foreach($arrRecipients as $address) {
+            $arrRecipientsAsString[] = $address->getName() . " <" . $address->getAddress() . ">";
+        }
+
+        $this->arrReport[] = [
+            "recipients"    => implode(', ', $arrRecipientsAsString),
+            "success"       => $success,
+            "message"       => $message
+        ];
+    }
+
+
+    public function getFailingReport() : array
+    {
+        $arrResult = array_filter($this->arrReport, fn($row) => $row["success"] == false);
+        foreach($arrResult as &$row) {
+            unset($row['success']);
+        }
+        return $arrResult;
     }
 }

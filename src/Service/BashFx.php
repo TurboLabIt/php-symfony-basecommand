@@ -77,11 +77,18 @@ class BashFx
     }
 
 
+    public function fxError(string $message) : self
+    {
+        $this->io->block($message, null, 'fg=black;bg=red', ' ', true);
+        return $this;
+    }
+
+
     public function fxCatastrophicError(string $message, bool $endFooterAndStop = true, ?string $commandName = null) : int
     {
         $txtCatastrophicError = "🛑 Catastrophic error 🛑";
         $fullMessage = $txtCatastrophicError . PHP_EOL . $message;
-        $this->io->block($fullMessage, null, 'fg=black;bg=red', ' ', true);
+        $this->fxError($fullMessage);
 
         if( $endFooterAndStop) {
 

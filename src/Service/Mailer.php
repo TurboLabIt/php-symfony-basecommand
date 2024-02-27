@@ -29,14 +29,14 @@ class Mailer
         $senderAddress  = $this->arrConfig["from"]["address"] ?? null;
 
         if( !empty($senderAddress) ) {
-            $this->email->from(new Address($senderAddress), $senderName);
+            $this->email->from( new Address($senderAddress, $senderName) );
         }
 
         $toName     = $this->arrConfig["to"]["name"] ?? null;
         $toAddress  = $this->arrConfig["to"]["address"] ?? null;
 
         if( !empty($toAddress) ) {
-            $this->email->to(new Address($toAddress), $toName);
+            $this->email->to( new Address($toAddress, $toName) );
         }
 
         return $this;

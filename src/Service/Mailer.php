@@ -167,7 +167,7 @@ class Mailer
 
         try {
             $this->mailer->send($this->email);
-            $this->addReportEntry($arrRecipients, false);
+            $this->addReportEntry($arrRecipients, true);
 
         } catch (TransportExceptionInterface $ex) {
 

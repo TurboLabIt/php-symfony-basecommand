@@ -118,7 +118,10 @@ class Mailer
         $this->email->subject($subject);
 
         $arrTemplateParams = [
-            "date" => date('Y-m-d H:i:s'),
+            "From"      => $this->email->getFrom()[0] ?? null,
+            "To"        => $this->email->getTo(),
+            "ToFirst"   => $this->email->getTo()[0] ?? null,
+            "date"      => date('Y-m-d H:i:s')
         ];
 
         /**

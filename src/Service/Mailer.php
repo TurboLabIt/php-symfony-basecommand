@@ -113,7 +113,7 @@ class Mailer
         }
 
         // subject
-        $subjectPrefix  = $this->arrMailerConfig["subject"]["tag"] ?? '';
+        $subjectPrefix  = $this->arrConfig["subject"]["tag"] ?? '';
         $subject        = empty($subjectPrefix) ? $subjectUnprefixed : ($subjectPrefix . " " . $subjectUnprefixed);
         $this->email->subject($subject);
 

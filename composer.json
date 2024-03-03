@@ -23,14 +23,15 @@
         "symfony/lock": "@stable",
         "league/csv": "@stable",
         "symfony/string": "@stable",
-        "symfony/translation-contracts": "@stable"
+        "symfony/translation-contracts": "@stable",
+        "league/html-to-markdown": "@stable"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
-        "symfony/dependency-injection": "^6.3",
-        "symfony/config": "^6.3",
-        "symfony/http-kernel": "^6.3",
-        "symfony/yaml": "^6.3"
+        "symfony/dependency-injection": "@stable",
+        "symfony/config": "@stable",
+        "symfony/http-kernel": "@stable",
+        "symfony/yaml": "@stable"
     },
     "config": {
         "allow-plugins": {

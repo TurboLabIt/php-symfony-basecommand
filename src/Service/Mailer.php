@@ -53,7 +53,7 @@ class Mailer
     }
 
 
-    public function setDisableAutoReply(bool $disable) : static
+    public function setDisableAutoReply(bool $disable = true) : static
     {
         $this->disableAutoReply = $disable;
         return $this;

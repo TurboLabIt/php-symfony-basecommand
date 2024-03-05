@@ -12,9 +12,10 @@ use Symfony\Component\Mime\Part\File;
 
 class Mailer
 {
-    protected bool $isBlocked = true;
     protected TemplatedEmail $email;
-    protected array $arrReport = [];
+    protected bool $disableAutoReply    = true;
+    protected bool $isBlocked           = true;
+    protected array $arrReport          = [];
 
 
     public function __construct(protected MailerInterface $mailer, protected ProjectDir $projectDir, protected array $arrConfig = [])
@@ -52,6 +53,13 @@ class Mailer
     }
 
 
+    public function setDisableAutoReply(bool $disable) : static
+    {
+        $this->disableAutoReply = $disable;
+        return $this;
+    }
+
+
     protected function build(string $subjectUnprefixed, string $templateName, ?array $arrTemplateData = [], null|string|array $to = null) : static
     {
         // to
@@ -67,7 +75,6 @@ class Mailer
 
             // array of recipients: "address" => 'xxx', "name" => 'yyy')
             $firstToSet = false;
-            $arrTo      = [];
             foreach($to as $recipient) {
 
                 $toName     = $recipient["name"] ?? null;
@@ -117,11 +124,18 @@ class Mailer
         $subject        = empty($subjectPrefix) ? $subjectUnprefixed : ($subjectPrefix . " " . $subjectUnprefixed);
         $this->email->subject($subject);
 
+        //
+        if( $this->disableAutoReply ) {
+
+            $headers = $this->email->getHeaders();
+            $headers->addTextHeader('X-Auto-Response-Suppress', 'OOF, DR, RN, NRN, AutoReply');
+        }
+
         $arrTemplateParams = [
             "From"      => $this->email->getFrom()[0] ?? null,
             "To"        => $this->email->getTo(),
             "ToFirst"   => $this->email->getTo()[0] ?? null,
-            "date"      => date('Y-m-d H:i:s')
+            "date"      => date('Y-m-d H:i:s'),
         ];
 
         /**
@@ -154,6 +168,35 @@ class Mailer
     public function attach(string $filepath, ?string $fileNameToShow = null) : static
     {
         $this->email->addPart( new DataPart(new File($filepath), $fileNameToShow) );
+        return $this;
+    }
+
+
+    public function addUnsubscribeHeader(?string $unsubscribeUrl, ?string $unsubscribeMailTo) : static
+    {
+        // 📚 https://datatracker.ietf.org/doc/html/rfc8058#section-8.1
+        
+        $arrListUnsubscribeValues = [];
+        if( !empty($unsubscribeMailTo) ) {
+            $arrListUnsubscribeValues[] = '<mailto:' . $unsubscribeMailTo . '>';
+        }
+
+        if( !empty($unsubscribeUrl) ) {
+            $arrListUnsubscribeValues[] = '<' . $unsubscribeUrl . '>';
+        }
+
+        if( empty($arrListUnsubscribeValues) ) {
+            return $this;
+        }
+
+        $headers = $this->email->getHeaders();
+
+        $headers->addTextHeader('List-Unsubscribe', implode(', ', $arrListUnsubscribeValues) );
+
+        if( !empty($unsubscribeUrl) ) {
+            $headers->addTextHeader('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click');
+        }
+
         return $this;
     }
 

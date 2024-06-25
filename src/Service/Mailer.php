@@ -62,61 +62,14 @@ class Mailer
 
     protected function build(string $subjectUnprefixed, string $templateName, ?array $arrTemplateData = [], null|string|array $to = null) : static
     {
-        // to
         if( empty($to) ) {
 
             // use default recipients from arrConfig
 
-        } elseif ( is_string($to) ) {
-
-            $this->email->to(new Address($to));
-
-        } elseif( !empty( array_column($to, "address") ) ) {
-
-            // array of recipients: "address" => 'xxx', "name" => 'yyy')
-            $firstToSet = false;
-            foreach($to as $recipient) {
-
-                $toName     = $recipient["name"] ?? null;
-                $toAddress  = $recipient["address"] ?? null;
-
-                if( empty($toAddress) ) {
-                    continue;
-                }
-
-                $toAddress = new Address($toAddress, $toName);
-
-                if( !$firstToSet ) {
-
-                    $this->email->to($toAddress);
-                    $firstToSet = true;
-                    continue;
-                }
-
-                $this->email->addTo($toAddress);
-            }
-
         } else {
 
-            // array of recipients: addr1, addr2, ..)
-            $firstToSet = false;
-            foreach($to as $toAddress) {
-
-                if( empty($toAddress) ) {
-                    continue;
-                }
-
-                $toAddress = new Address($toAddress);
-
-                if( !$firstToSet ) {
-
-                    $this->email->to($toAddress);
-                    $firstToSet = true;
-                    continue;
-                }
-
-                $this->email->addTo($toAddress);
-            }
+            $this->email->getHeaders()->remove('To');
+            $this->addRecipients($to, 'to');
         }
 
         // subject
@@ -157,6 +110,66 @@ class Mailer
     }
 
 
+    public function addTo(null|string|array $recipients) : static { return $this->addRecipients($recipients, 'to'); }
+
+    public function addBcc(null|string|array $recipients) : static { return $this->addRecipients($recipients, 'bcc'); }
+
+
+    protected function addRecipients(null|string|array $recipients, string $fieldName) : static
+    {
+        if( empty($recipients) ) {
+            return $this;
+        }
+
+        if( is_string($recipients) ) {
+            $recipients = [$recipients];
+        }
+
+        foreach($recipients as $item) {
+
+            if( empty($item) ) {
+                continue;
+            }
+
+            if( is_array($item) ) {
+
+                $toName     = $item["name"] ?? null;
+                $toAddress  = $item["address"] ?? null;
+                $toAddress  = trim($toAddress);
+
+                if( empty($toAddress) ) {
+                    continue;
+                }
+
+                $toAddress = new Address($toAddress, $toName);
+
+            } else {
+
+                $toAddress = trim($item);
+
+                if( empty($toAddress) ) {
+                    continue;
+                }
+
+                $toAddress = new Address($toAddress);
+            }
+
+            $fxCheck = 'get' . ucfirst($fieldName);
+            if( empty($this->email->$fxCheck()) ) {
+
+                $this->email->$fieldName($toAddress);
+
+            } else {
+
+                $fxAdd = 'add' . ucfirst($fieldName);
+                $this->email->$fxAdd($toAddress);
+            }
+        }
+
+        return $this;
+    }
+
+
     public function attachFromVar(string $fileSubpath, ?string $fileNameToShow = null) : static
     {
         $fullFilePath  = $this->projectDir->getVarDirFromFilePath($fileSubpath);
@@ -175,7 +188,7 @@ class Mailer
     public function addUnsubscribeHeader(?string $unsubscribeUrl, ?string $unsubscribeMailTo) : static
     {
         // 📚 https://datatracker.ietf.org/doc/html/rfc8058#section-8.1
-        
+
         $arrListUnsubscribeValues = [];
         if( !empty($unsubscribeMailTo) ) {
             $arrListUnsubscribeValues[] = '<mailto:' . $unsubscribeMailTo . '>';

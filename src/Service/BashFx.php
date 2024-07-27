@@ -30,13 +30,18 @@ class BashFx
     }
 
 
-    public function fxHeader(string $message) : self
+    public function fxHeader(string $message, ?string $env = null) : self
     {
         $this->startedAt = new \DateTime();
 
         $message =
             trim($message) . PHP_EOL .
             "📅 " . $this->startedAt->format("H:i:s | l, F d, Y");
+
+        if( !empty($env) ) {
+            $message .= PHP_EOL .
+                "🌳 $env";
+        }
 
         $this->io->block($message, null, 'fg=black;bg=cyan', ' ', true);
         return $this;

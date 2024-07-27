@@ -6,7 +6,10 @@ trait HeaderFooterTrait
 {
     protected function showStart() : self
     {
-        $this->bashFx->fxHeader("🚀 Running ##" .  $this->getName() . "##");
+        $message    = "🚀 Running ##" .  $this->getName() . "##";
+        $env        = empty($this->parameters) ? null : $this->parameters->get("kernel.environment");
+
+        $this->bashFx->fxHeader($message, $env);
         return $this;
     }
 

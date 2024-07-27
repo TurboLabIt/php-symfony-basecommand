@@ -2,22 +2,30 @@
 namespace TurboLabIt\BaseCommand\Service;
 
 use RuntimeException;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use TurboLabIt\BaseCommand\Command\AbstractBaseCommand;
 
 
 class BashFx
 {
+    const ORDER_BY_NAME     = "order-by-name";
+    const ORDER_BY_MOD_DATE = "order-by-mod-date";
+
+    protected InputInterface $input;
+    protected OutputInterface $output;
     protected ?SymfonyStyle $io;
     protected \DateTime $startedAt;
 
 
     public function setIo(InputInterface $input, OutputInterface $output) : SymfonyStyle
     {
-        $this->io = new SymfonyStyle($input, $output);
+        $this->input    = $input;
+        $this->output   = $output;
+        $this->io       = new SymfonyStyle($input, $output);
+
         return $this->io;
     }
 
@@ -128,5 +136,50 @@ class BashFx
 
         $this->io->block($message, null, 'fg=black;bg=' . $bgColor, ' ', true);
         return $result;
+    }
+
+
+    public function fxListFiles(string $path, string $orderBy = self::ORDER_BY_NAME) : static
+    {
+        $dir = new \DirectoryIterator($path);
+        $arrTableContent = [];
+
+        /** @var \DirectoryIterator $fileinfo */
+        foreach($dir as $fileinfo) {
+
+            if ($fileinfo->isDot()) {
+                continue;
+            }
+
+            $modTimestamp   = $fileinfo->getMTime();
+            $compressedIcon =
+                in_array($fileinfo->getExtension(), ["gz", "zip", "gzip", "rar"]) ? "🗜" : "🐡";
+
+            $arrTableContent[] = [
+                "Filename"      => $fileinfo->getFilename(),
+                "Date"          => (new \DateTime())
+                                    ->setTimestamp($modTimestamp)
+                                    ->format('Y-m-d H:i:s'),
+                "Compr."        => $compressedIcon,
+                "Timestamp"     => $modTimestamp
+            ];
+        }
+
+        // TODO implement others order by (based on $orderBy)
+
+        usort($arrTableContent, function(array $item1, array $item2) {
+            return strcmp( mb_strtolower($item1["Filename"]), mb_strtolower($item2["Filename"]));
+        });
+
+        foreach($arrTableContent as &$arrItem) {
+            unset($arrItem["Timestamp"]);
+        }
+
+        (new Table($this->output))
+            ->setHeaders( array_keys($arrTableContent[0]) )
+            ->setRows($arrTableContent)
+            ->render();
+
+        return $this;
     }
 }

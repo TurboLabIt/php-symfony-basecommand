@@ -34,4 +34,9 @@ trait BashFxDirectTrait
         $this->bashFx->fxWarning($message);
         return $this;
     }
+
+    protected function fxListFiles(string $path, string $orderBy = BashFx::ORDER_BY_NAME) : BashFx
+    {
+        return $this->bashFx->fxListFiles($path, $orderBy);
+    }
 }

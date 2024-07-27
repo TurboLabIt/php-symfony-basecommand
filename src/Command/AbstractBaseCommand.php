@@ -6,10 +6,11 @@
 namespace TurboLabIt\BaseCommand\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use TurboLabIt\BaseCommand\Service\DateMagician;
 use TurboLabIt\BaseCommand\Service\Mailer;
-use TurboLabIt\BaseCommand\Service\Options;
 use TurboLabIt\BaseCommand\Traits\BashFxDirectTrait;
+use TurboLabIt\BaseCommand\Traits\EnvTrait;
 use TurboLabIt\BaseCommand\Traits\ProjectDirDirectTrait;
 use TurboLabIt\BaseCommand\Traits\CliOptionsTrait;
 use TurboLabIt\BaseCommand\Traits\CliArgumentsTrait;
@@ -24,7 +25,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TurboLabIt\BaseCommand\Service\BashFx;
 use TurboLabIt\BaseCommand\Service\ItemStringify;
-use TurboLabIt\BaseCommand\Service\ProjectDir;
 
 
 abstract class AbstractBaseCommand extends Command
@@ -39,6 +39,7 @@ abstract class AbstractBaseCommand extends Command
     use LockableTrait;
     use IteratorTrait;
     use ParsingTrait;
+    use EnvTrait;
 
     protected DateMagician $dateMagician;
 

@@ -14,11 +14,11 @@ trait EnvTrait
     {
         if( empty($this->parameters) ) {
             throw new RuntimeException(
-                'Autowiring ParameterBagInterface $parameters is required before using BaseCommand env functions'
+                'Autowiring ParameterBagInterface $parameters is required to use BaseCommand env functions'
             );
         }
 
-        return $this->parameters->get("kernel.environment")
+        return $this->parameters->get("kernel.environment");
     }
 
 

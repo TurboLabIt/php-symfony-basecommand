@@ -230,7 +230,7 @@ trait CliOptionsTrait
                 "Can't use --" . Options::CLI_OPT_UNLOCK . " in " . $this->getEnv() . " env, only in " .
                 implode(', ', $this->allowUnlockOptIn);
             
-            throw new RuntimeException($fullMessage)
+            throw new RuntimeException($fullMessage);
         }
 
         if( $isLimited && !$silent ) {

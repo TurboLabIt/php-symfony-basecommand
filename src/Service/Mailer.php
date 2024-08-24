@@ -115,7 +115,7 @@ class Mailer
         
         $subjectPrefix  = $this->arrConfig["subject"]["tag"] ?? '';
         $subjectPrefix  = trim($subjectPrefix);
-        if( !empty($subjectPrefix) {
+        if( !empty($subjectPrefix) ) {
            $fullSubject .= " " . $subjectPrefix;
         }
     

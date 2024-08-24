@@ -26,4 +26,8 @@ trait EnvTrait
     public function isNotProd() : bool { return !$this->isProd(); }
     public function isDev() : bool { return $this->getEnv() === "dev"; }
     public function isDevOrTest() : bool { return in_array($this->getEnv(), ["dev", "test"]); }
+
+
+    public function getEnvTag() : string
+        { return $this->isProd() ? '' : ("[" . $this->getEnv() . "] "); }
 }

@@ -63,7 +63,7 @@ trait CliOptionsTrait
      * Should the unlimited mode by `--CLI_OPT_UNLOCK`
      * be allowed on a limited set of enviornments only?
      */
-    protected array $allowUnlockOptIn = ["prod"];
+    protected ?array $allowUnlockOptIn = ["prod"];
 
 
     protected function configure() : void

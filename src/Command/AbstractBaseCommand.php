@@ -29,6 +29,8 @@ use TurboLabIt\BaseCommand\Service\ItemStringify;
 
 abstract class AbstractBaseCommand extends Command
 {
+    const WARNING = 9;
+    
     use BashFxDirectTrait;
     use ProjectDirDirectTrait;
     use CliOptionsTrait;

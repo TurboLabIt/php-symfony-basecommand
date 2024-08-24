@@ -37,9 +37,7 @@ trait HeaderFooterTrait
 
 
     protected function endWithError(string $message) : void
-    {
-        $this->bashFx->fxCatastrophicError($message);
-    }
+        { $this->bashFx->fxCatastrophicError($message); }
 
 
     protected function addToReport($key, $newValue) : bool

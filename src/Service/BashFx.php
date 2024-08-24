@@ -114,7 +114,7 @@ class BashFx
     }
 
 
-    public function fxEndFooter(int $result, ?string $commandName = null) : int
+    public function fxEndFooter(int $result, ?string $commandName = null, ?string $txtFinalMessage = null) : int
     {
         $endAt      = new \DateTime();
         $timeTook   = $endAt->getTimestamp() - $this->startedAt->getTimestamp();
@@ -126,16 +126,23 @@ class BashFx
             $bgColor    = 'bright-green';
             $word       = 'OK';
 
+        } elseif( $result == AbstractBaseCommand::WARNING ) {
+
+            $bgColor    = 'yellow';
+            $word       = 'WARN';
+
         } else {
 
             $bgColor    = 'red';
             $word       = 'KO';
         }
 
-        $commandNameTxt = empty($commandName) ? '' : "$commandName: ";
+        $txtFinalMessage   = empty($txtFinalMessage) ? '' : ($txtFinalMessage . PHP_EOL);
+        $commandNameTxt    = empty($commandName) ? '' : "$commandName: ";
 
         $message    =
-            "🏁 {$commandNameTxt}The End 🏁 | " . $word . PHP_EOL .
+            $txtFinalMessage .
+            "🏁 {$commandNameTxt}The End 🏁 | {$word}" . PHP_EOL .
             "📅 " . $endAt->format("H:i:s | l, F d, Y") . PHP_EOL .
             "⌚ Total time: " . $timeTook . " min.";
 

@@ -8,4 +8,5 @@ class Options
     const CLI_OPT_SINGLE_ID         = "id";
     const CLI_OPT_NO_DOWNLOAD       = "no-download";
     const CLI_OPT_LANGUAGE          = "language";
+    const CLI_OPT_UNLOCK            = "unlocked";
 }

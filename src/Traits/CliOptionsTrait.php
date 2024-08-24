@@ -1,6 +1,7 @@
 <?php
 namespace TurboLabIt\BaseCommand\Traits;
 
+use RuntimeException;
 use Symfony\Component\Console\Input\InputOption;
 use TurboLabIt\BaseCommand\Service\Options;
 
@@ -49,6 +50,21 @@ trait CliOptionsTrait
      */
     protected bool $langOptIsMandatory = false;
 
+    /**
+     * Should the application work in a restricted mode or
+     * on a limited dataset by default and unlock the full
+     * mode only if the `--CLI_OPT_UNLOCK` is provided?
+     * 💡 This is reccomended for commands designed to
+     * send newsletters or deliver messages to the users
+     */
+    protected bool $limitedByDefaultOpt = false;
+
+    /**
+     * Should the unlimited mode by `--CLI_OPT_UNLOCK`
+     * be allowed on a limited set of enviornments only?
+     */
+    protected array $allowUnlockOptIn = ["prod"];
+
 
     protected function configure() : void
     {
@@ -73,6 +89,10 @@ trait CliOptionsTrait
         if( $this->allowLangOpt ) {
             $this->addOption(Options::CLI_OPT_LANGUAGE, null, InputOption::VALUE_REQUIRED, 'The language to work on');
         }
+
+        if( $this->limitedByDefaultOpt ) {
+            $this->addOption(Options::CLI_OPT_UNLOCK, null, InputOption::VALUE_NONE, 'Remove all restrictions');
+        }
     }
 
 
@@ -91,9 +111,7 @@ trait CliOptionsTrait
 
 
     protected function getCliOption(string $staticCLI_OPT_NAME) : mixed
-    {
-        return $this->input->getOption($staticCLI_OPT_NAME);
-    }
+        { return $this->input->getOption($staticCLI_OPT_NAME); }
 
 
     protected function getCliId() : mixed
@@ -102,8 +120,7 @@ trait CliOptionsTrait
             return null;
         }
 
-        $idOpt = $this->getCliOption(Options::CLI_OPT_SINGLE_ID);
-        return $idOpt;
+        return $this->getCliOption(Options::CLI_OPT_SINGLE_ID);
     }
 
 
@@ -124,10 +141,7 @@ trait CliOptionsTrait
 
 
     protected function isNotDryRun(bool $silent = false) : bool
-    {
-        $isDryRun = $this->isDryRun($silent);
-        return !$isDryRun;
-    }
+        { return !$this->isDryRun($silent); }
 
 
     protected function isSendingMessageAllowed(bool $silent = false) : bool
@@ -198,4 +212,34 @@ trait CliOptionsTrait
 
         return !$isDownloadBlocked;
     }
+
+
+    protected function isLimited(bool $silent = false) : bool
+    {
+        if( !$this->limitedByDefaultOpt ) {
+            return false;
+        }
+
+        $isLimited = !$this->getCliOption(Options::CLI_OPT_UNLOCK);
+
+        if(
+            !$isLimited && !empty($this->allowUnlockOptIn) &&
+            !in_array($this->getEnv(), $this->allowUnlockOptIn)
+        ) {
+            $fullMessage =
+                "Can't use --" . Options::CLI_OPT_UNLOCK . " in " . $this->getEnv() . " env, only in " .
+                implode(', ', $this->allowUnlockOptIn);
+            
+            throw new RuntimeException($fullMessage)
+        }
+
+        if( $isLimited && !$silent ) {
+            $this->fxWarning("🧪 Limited mode is engaged. Remove it with --" . Options::CLI_OPT_UNLOCK);
+        }
+
+        return $isLimited;
+    }
+
+
+    protected function isUnlocked() : bool
 }

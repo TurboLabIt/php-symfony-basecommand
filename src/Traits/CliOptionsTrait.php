@@ -139,7 +139,6 @@ trait CliOptionsTrait
         return $isDryRun;
     }
 
-
     protected function isNotDryRun(bool $silent = false) : bool
         { return !$this->isDryRun($silent); }
 
@@ -243,7 +242,6 @@ trait CliOptionsTrait
 
         return $isLimited;
     }
-
 
     protected function isUnlocked(bool $silent = false) : bool { return !$this->isLimited($silent); }
 }

@@ -120,7 +120,10 @@ class Mailer
         }
     
         $fullSubject = trim($fullSubject) . " " . $subjectUnprefixed;
-        return trim($fullSubject);
+        $fullSubject = trim($fullSubject);
+        $fullSubject = html_entity_decode($fullSubject, ENT_QUOTES, 'UTF-8');
+
+        return $fullSubject;
     }
 
 

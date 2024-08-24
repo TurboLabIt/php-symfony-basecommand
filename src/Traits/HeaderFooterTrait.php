@@ -28,7 +28,7 @@ trait HeaderFooterTrait
         return
             $this
                 ->showEndReport()
-                ->bashFx->fxEndFooter( static::WARNING, $this->getName() );
+                ->bashFx->fxEndFooter( static::WARNING, $this->getName(), $message );
     }
 
 

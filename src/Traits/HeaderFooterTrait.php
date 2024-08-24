@@ -25,10 +25,12 @@ trait HeaderFooterTrait
 
     protected function endWithWarning(string $message) : int
     {
+        $this->io->block($message, null, 'fg=black;bg=yellow', ' ', true);
+        
         return
             $this
                 ->showEndReport()
-                ->bashFx->fxEndFooter( static::WARNING, $this->getName(), $message );
+                ->bashFx->fxEndFooter( static::WARNING, $this->getName() );
     }
 
 

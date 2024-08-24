@@ -8,6 +8,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 
 class Mailer
@@ -18,10 +19,11 @@ class Mailer
     protected array $arrReport          = [];
 
 
-    public function __construct(protected MailerInterface $mailer, protected ProjectDir $projectDir, protected array $arrConfig = [])
-    {
-        $this->init();
-    }
+    public function __construct(
+        protected MailerInterface $mailer, protected ProjectDir $projectDir, 
+        protected ParameterBagInterface $parameters, protected array $arrConfig = []
+    )
+        { $this->init(); }
 
 
     public function init() : static
@@ -72,9 +74,7 @@ class Mailer
             $this->addRecipients($to, 'to');
         }
 
-        // subject
-        $subjectPrefix  = $this->arrConfig["subject"]["tag"] ?? '';
-        $subject        = empty($subjectPrefix) ? $subjectUnprefixed : ($subjectPrefix . " " . $subjectUnprefixed);
+        $subject = $this->buildSubject($subjectUnprefixed);
         $this->email->subject($subject);
 
         //
@@ -101,12 +101,38 @@ class Mailer
          *     router.request_context.scheme: 'https'
          */
 
-        // body
         $this->email
             ->htmlTemplate($templateName)
             ->context( array_merge($arrTemplateData, $arrTemplateParams) );
 
         return $this;
+    }
+
+
+    protected function buildSubject(string $subjectUnprefixed) : string
+    {
+        $fullSubject = $this->getEnvTag();
+        
+        $subjectPrefix  = $this->arrConfig["subject"]["tag"] ?? '';
+        $subjectPrefix  = trim($subjectPrefix);
+        if( !empty($subjectPrefix) {
+           $fullSubject .= " " . $subjectPrefix;
+        }
+    
+        $fullSubject = trim($fullSubject) . " " . $subjectUnprefixed;
+        return trim($fullSubject);
+    }
+
+
+    protected function getEnvTag(bool $includeProd = false) : string
+    {
+        $env = $this->parameters->get("kernel.environment");
+        
+        if( $env == 'prod' && !$includeProd ) {
+            return '';
+        }
+        
+        return "[" . strtoupper($env) . "] ";
     }
 
 

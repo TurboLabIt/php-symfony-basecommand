@@ -236,10 +236,14 @@ trait CliOptionsTrait
         if( $isLimited && !$silent ) {
             $this->fxWarning("🧪 Limited mode is engaged. Remove it with --" . Options::CLI_OPT_UNLOCK);
         }
+        
+        if( !$isLimited && !$silent ) {
+            $this->fxWarning("⚠ Unlimited mode is engaged via --" . Options::CLI_OPT_UNLOCK);
+        }
 
         return $isLimited;
     }
 
 
-    protected function isUnlocked() : bool
+    protected function isUnlocked(bool $silent = false) : bool { return !$this->isLimited($silent); }
 }

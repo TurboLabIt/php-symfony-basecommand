@@ -128,8 +128,9 @@ class BashFx
 
         } elseif( $result == AbstractBaseCommand::WARNING ) {
 
-            $bgColor    = 'yellow';
-            $word       = 'WARN';
+            $bgColor   = 'yellow';
+            $word      = 'WARN';
+            $result    = AbstractBaseCommand::SUCCESS;
 
         } else {
 

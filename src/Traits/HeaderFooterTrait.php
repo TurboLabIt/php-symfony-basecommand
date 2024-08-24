@@ -23,6 +23,15 @@ trait HeaderFooterTrait
     }
 
 
+    protected function endWithWarning(string $message) : int
+    {
+        return
+            $this
+                ->showEndReport()
+                ->bashFx->fxEndFooter( static::FAILURE, $this->getName() );
+    }
+
+
     protected function endWithError(string $message) : void
     {
         $this->bashFx->fxCatastrophicError($message);

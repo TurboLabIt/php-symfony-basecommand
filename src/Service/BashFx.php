@@ -39,9 +39,10 @@ class BashFx
             "📅 " . $this->startedAt->format("H:i:s | l, F d, Y");
 
         if( !empty($env) ) {
-            $message .= PHP_EOL .
-                "🌳 $env";
+            $message .= PHP_EOL . "🌳 $env";
         }
+
+        $message .= PHP_EOL . "🐘 PHP " . phpversion();
 
         $this->io->block($message, null, 'fg=black;bg=cyan', ' ', true);
         return $this;

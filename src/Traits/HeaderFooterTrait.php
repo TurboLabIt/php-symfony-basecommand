@@ -25,7 +25,7 @@ trait HeaderFooterTrait
 
     protected function endWithWarning(?string $message = null) : int
     {
-        if( !empty($message) {
+        if( !empty($message) ) {
             $this->io->block($message, null, 'fg=black;bg=yellow', ' ', true);  
         }
         

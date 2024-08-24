@@ -28,6 +28,12 @@ trait EnvTrait
     public function isDevOrTest() : bool { return in_array($this->getEnv(), ["dev", "test"]); }
 
 
-    public function getEnvTag() : string
-        { return $this->isProd() ? '' : ("[" . $this->getEnv() . "] "); }
+    public function getEnvTag(bool $includeProd = false) : string
+    {
+        if( $this->isProd() && !$includeProd ) {
+            return '';
+        }
+        
+        return "[" . strtoupper( $this->getEnv() ) . "] ";
+    }
 }

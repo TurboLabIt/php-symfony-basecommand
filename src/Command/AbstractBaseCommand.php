@@ -86,7 +86,7 @@ abstract class AbstractBaseCommand extends Command
     }
 
 
-    protected function autoInit() : self
+    protected function autoInit() : static
     {
         return $this;
     }

@@ -28,7 +28,7 @@ trait TempWorkDirTrait
     }
 
 
-    protected function deleteWorkingDir() : self
+    protected function deleteWorkingDir() : static
     {
         $path = $this->getTempWorkingDirPath();
 

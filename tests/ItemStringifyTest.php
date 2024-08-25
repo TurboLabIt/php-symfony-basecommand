@@ -155,7 +155,7 @@ class TestItemName
         return $this->name;
     }
 
-    public function setNameUpper() : self
+    public function setNameUpper() : static
     {
         $this->name = mb_strtoupper($this->name);
         return $this;

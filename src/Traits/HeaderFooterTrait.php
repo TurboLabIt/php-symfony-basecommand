@@ -4,7 +4,7 @@ namespace TurboLabIt\BaseCommand\Traits;
 
 trait HeaderFooterTrait
 {
-    protected function showStart() : self
+    protected function showStart() : static
     {
         $message    = "🚀 Running ##" .  $this->getName() . "##";
         $env        = empty($this->parameters) ? null : $this->parameters->get("kernel.environment");
@@ -51,7 +51,7 @@ trait HeaderFooterTrait
     }
 
 
-    protected function showEndReport() : self
+    protected function showEndReport() : static
     {
         if( empty($this->arrReport) ) {
             return $this;
@@ -64,7 +64,7 @@ trait HeaderFooterTrait
     }
 
 
-    protected function executionReport() : self
+    protected function executionReport() : static
     {
         $arrDefinitionList = [];
         foreach($this->arrReport as $key => $value) {

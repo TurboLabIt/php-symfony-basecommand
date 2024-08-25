@@ -56,7 +56,7 @@ trait TestSuiteSupportFxTrait
     }
 
 
-    protected function testId(array $arrValues, string $fileBasePath, bool $mustExist) : self
+    protected function testId(array $arrValues, string $fileBasePath, bool $mustExist) : static
     {
         foreach($arrValues as $key => $val) {
 

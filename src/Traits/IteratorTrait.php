@@ -15,7 +15,7 @@ trait IteratorTrait
     protected ?ItemStringify $itemStringify;
 
 
-    protected function processItems(iterable $items, callable $fxProcess, ?int $itemNum = null, ?callable $fxGenerateItemTitle = null, ?callable $fxAutoSkipLogic = null) : self
+    protected function processItems(iterable $items, callable $fxProcess, ?int $itemNum = null, ?callable $fxGenerateItemTitle = null, ?callable $fxAutoSkipLogic = null) : static
     {
         if( $itemNum === null ) {
             $itemNum = count($items);

@@ -30,7 +30,7 @@ class BashFx
     }
 
 
-    public function fxHeader(string $message, ?string $env = null) : self
+    public function fxHeader(string $message, ?string $env = null) : static
     {
         $this->startedAt = new \DateTime();
 
@@ -49,7 +49,7 @@ class BashFx
     }
 
 
-    public function fxTitle(string $message) : self
+    public function fxTitle(string $message) : static
     {
         $this->io->writeln('');
 
@@ -65,7 +65,7 @@ class BashFx
     }
 
 
-    public function fxInfo(string $message) : self
+    public function fxInfo(string $message) : static
     {
         $formattedMessage = '<fg=bright-blue>ℹ ' . $message . '</>';
         $this->io->writeln($formattedMessage);
@@ -73,7 +73,7 @@ class BashFx
     }
 
 
-    public function fxOK(?string $message = null) : self
+    public function fxOK(?string $message = null) : static
     {
         if( empty($message) ) {
             $message = "OK";
@@ -84,14 +84,14 @@ class BashFx
     }
 
 
-    public function fxWarning(string $message) : self
+    public function fxWarning(string $message) : static
     {
         $this->io->note("$message");
         return $this;
     }
 
 
-    public function fxError(string $message) : self
+    public function fxError(string $message) : static
     {
         $this->io->block($message, null, 'fg=black;bg=red', ' ', true);
         return $this;

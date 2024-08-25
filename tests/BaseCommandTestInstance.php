@@ -87,7 +87,7 @@ class BaseCommandTestInstance extends AbstractBaseCommand
     }
 
 
-    protected function iterateOver(string $fileBasePath, ?int $id = null) : self
+    protected function iterateOver(string $fileBasePath, ?int $id = null) : static
     {
         $arrElements = array_fill(0, 5, 'test');
 

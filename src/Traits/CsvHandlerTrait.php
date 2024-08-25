@@ -9,7 +9,7 @@ trait CsvHandlerTrait
     protected int $lastCsvReadRowsNum = 0;
 
 
-    protected function processCsv(string $csvFilePath, callable $fxProcess, string $delimiter = ',', int $headerOffset = 0) : self
+    protected function processCsv(string $csvFilePath, callable $fxProcess, string $delimiter = ',', int $headerOffset = 0) : static
     {
         $oCsvData = $this->readCsv($csvFilePath, false, $delimiter, $headerOffset);
 
@@ -53,7 +53,7 @@ trait CsvHandlerTrait
     }
 
 
-    protected function writeCsv(string $csvFilePath, array $arrDataToWrite, bool $silent = false, string $delimiter = ',') : self
+    protected function writeCsv(string $csvFilePath, array $arrDataToWrite, bool $silent = false, string $delimiter = ',') : static
     {
         if( !$silent ) {
             $this->fxInfo("📑 Writing CSV ##" . $csvFilePath . "##");
@@ -67,7 +67,7 @@ trait CsvHandlerTrait
     }
 
 
-    protected function writeCsvToVarPath(array|string $relativeFilePath, array $arrDataToWrite, bool $silent = false, string $delimiter = ',') : self
+    protected function writeCsvToVarPath(array|string $relativeFilePath, array $arrDataToWrite, bool $silent = false, string $delimiter = ',') : static
     {
         $filePath = $this->projectDir->createVarDirFromFilePath($relativeFilePath);
         return $this->writeCsv($filePath, $arrDataToWrite, $silent, $delimiter);

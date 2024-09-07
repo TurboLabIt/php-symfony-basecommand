@@ -243,7 +243,7 @@ class Mailer
     }
 
 
-    public function useLocalSmtp() : static
+    public function useLocalSmtpOnce() : static
     {
         /**
          * Requires a configuration change to config/packages/mailer.yaml:
@@ -251,11 +251,11 @@ class Mailer
             mailer:
                 transports:
                     main: '%env(MAILER_DSN)%'
-                    localSmtp: !php/const 'TurboLabIt\BaseCommand\Service\Mailer::DSN_LOCAL_SMTP'
+                    localsmtp: !php/const 'TurboLabIt\BaseCommand\Service\Mailer::DSN_LOCAL_SMTP'
 
         */
 
-        return $this->switchTransport('localSmtp');
+        return $this->switchTransport('localsmtp');
     }
 
 

@@ -1,8 +1,6 @@
 <?php
 namespace TurboLabIt\BaseCommand\Service;
 
-use Symfony\Component\Mailer\Exception\TransportException;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
@@ -13,6 +11,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class Mailer
 {
+    const DSN_LOCAL_SMTP = 'smtp://localhost?verify_peer=false';
+
     protected TemplatedEmail $email;
     protected bool $disableAutoReply    = true;
     protected bool $isBlocked           = true;
@@ -20,7 +20,7 @@ class Mailer
 
 
     public function __construct(
-        protected MailerInterface $mailer, protected ProjectDir $projectDir, 
+        protected MailerInterface $mailer, protected ProjectDir $projectDir,
         protected ParameterBagInterface $parameters, protected array $arrConfig = []
     )
         { $this->init(); }
@@ -112,13 +112,13 @@ class Mailer
     protected function buildSubject(string $subjectUnprefixed) : string
     {
         $fullSubject = $this->getEnvTag();
-        
+
         $subjectPrefix  = $this->arrConfig["subject"]["tag"] ?? '';
         $subjectPrefix  = trim($subjectPrefix);
         if( !empty($subjectPrefix) ) {
            $fullSubject .= " " . $subjectPrefix;
         }
-    
+
         $fullSubject = trim($fullSubject) . " " . $subjectUnprefixed;
         $fullSubject = trim($fullSubject);
         $fullSubject = html_entity_decode($fullSubject, ENT_QUOTES, 'UTF-8');
@@ -130,11 +130,11 @@ class Mailer
     protected function getEnvTag(bool $includeProd = false) : string
     {
         $env = $this->parameters->get("kernel.environment");
-        
+
         if( $env == 'prod' && !$includeProd ) {
             return '';
         }
-        
+
         return "[" . strtoupper($env) . "] ";
     }
 
@@ -243,7 +243,10 @@ class Mailer
     }
 
 
-    public function send() : void
+    public function send() : void { $this->sendWithMailer($this->mailer); }
+
+
+    public function sendWithMailer(MailerInterface $mailer) : void
     {
         $arrRecipients = $this->email->getTo();
 
@@ -254,10 +257,10 @@ class Mailer
         }
 
         try {
-            $this->mailer->send($this->email);
+            $mailer->send($this->email);
             $this->addReportEntry($arrRecipients, true);
 
-        } catch (TransportExceptionInterface $ex) {
+        } catch (\Exception $ex) {
 
             $this->addReportEntry($arrRecipients, false, $ex->getMessage());
             throw $ex;

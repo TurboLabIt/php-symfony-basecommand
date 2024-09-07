@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class Mailer
 {
-    const DSN_LOCAL_SMTP = 'smtp://localhost?verify_peer=false';
-
     protected TemplatedEmail $email;
     protected bool $disableAutoReply    = true;
     protected bool $isBlocked           = true;
@@ -243,10 +241,7 @@ class Mailer
     }
 
 
-    public function send() : void { $this->sendWithMailer($this->mailer); }
-
-
-    public function sendWithMailer(MailerInterface $mailer) : void
+    public function sendWithMailer() : void
     {
         $arrRecipients = $this->email->getTo();
 
@@ -257,7 +252,7 @@ class Mailer
         }
 
         try {
-            $mailer->send($this->email);
+            $this->mailer->send($this->email);
             $this->addReportEntry($arrRecipients, true);
 
         } catch (\Exception $ex) {

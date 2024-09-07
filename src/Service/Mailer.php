@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class Mailer
 {
+    const DSN_LOCAL_SMTP = 'smtp://localhost?verify_peer=false';
+
     protected TemplatedEmail $email;
     protected bool $disableAutoReply    = true;
     protected bool $isBlocked           = true;
@@ -241,7 +243,31 @@ class Mailer
     }
 
 
-    public function sendWithMailer() : void
+    public function useLocalSmtp() : static
+    {
+        /**
+         * Requires a configuration change to config/packages/mailer.yaml:
+        framework:
+            mailer:
+                transports:
+                    main: '%env(MAILER_DSN)%'
+                    localSmtp: !php/const 'TurboLabIt\BaseCommand\Service\Mailer::DSN_LOCAL_SMTP'
+
+        */
+
+        return $this->switchTransport('localSmtp');
+    }
+
+
+    public function switchTransport(string $transportName) : static
+    {
+        // 📚 https://symfony.com/doc/current/mailer.html#multiple-email-transports
+        $this->email->getHeaders()->addTextHeader('X-Transport', $transportName);
+        return $this;
+    }
+
+
+    public function send() : void
     {
         $arrRecipients = $this->email->getTo();
 

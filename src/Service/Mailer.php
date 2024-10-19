@@ -81,6 +81,7 @@ class Mailer
         if( $this->disableAutoReply ) {
 
             $headers = $this->email->getHeaders();
+            $headers->remove('X-Auto-Response-Suppress');
             $headers->addTextHeader('X-Auto-Response-Suppress', 'OOF, DR, RN, NRN, AutoReply');
         }
 
@@ -233,9 +234,12 @@ class Mailer
 
         $headers = $this->email->getHeaders();
 
+        $headers->remove('List-Unsubscribe');
         $headers->addTextHeader('List-Unsubscribe', implode(', ', $arrListUnsubscribeValues) );
 
         if( !empty($unsubscribeUrl) ) {
+
+            $headers->remove('List-Unsubscribe-Post');
             $headers->addTextHeader('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click');
         }
 
@@ -262,7 +266,9 @@ class Mailer
     public function switchTransport(string $transportName) : static
     {
         // 📚 https://symfony.com/doc/current/mailer.html#multiple-email-transports
-        $this->email->getHeaders()->addTextHeader('X-Transport', $transportName);
+        $headers = $this->email->getHeaders();
+        $headers->remove('X-Transport');
+        $headers->addTextHeader('X-Transport', $transportName);
         return $this;
     }
 

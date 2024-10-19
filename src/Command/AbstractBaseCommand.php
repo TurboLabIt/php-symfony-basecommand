@@ -30,7 +30,7 @@ use TurboLabIt\BaseCommand\Service\ItemStringify;
 abstract class AbstractBaseCommand extends Command
 {
     const WARNING = 9;
-    
+
     use BashFxDirectTrait;
     use ProjectDirDirectTrait;
     use CliOptionsTrait;
@@ -94,29 +94,19 @@ abstract class AbstractBaseCommand extends Command
 
     protected function checkEmailSending() : static
     {
-        if( $this->allowBlockMessagesOpt == false ) {
+        if( !$this->allowBlockMessagesOpt && !$this->allowSendMessagesOpt ) {
             return $this;
         }
 
-        $this->fxTitle("📨 Email status...");
+        $sendingIsAllowed =
+            $this
+                ->fxTitle("📨 Messages sending status")
+                ->isSendingMessageAllowed();
 
-        $isTliMailerInstance = !empty($this->mailer) && $this->mailer instanceof Mailer;
-
-        if( $this->isSendingMessageAllowed(true) ) {
-
-            if($isTliMailerInstance) {
-                $this->mailer->block(false);
-            }
-
-            return $this->fxWarning("📨🔥 Emails are HOT!");
+        if( !empty($this->mailer) && $this->mailer instanceof Mailer ) {
+            $this->mailer->block( !$sendingIsAllowed );
         }
 
-        if($isTliMailerInstance) {
-
-            $this->mailer->block(true);
-            return $this->fxInfo("Email are blocked");
-        }
-
-        return $this->fxInfo("Email SHOULD be blocked");
+        return $this;
     }
 }

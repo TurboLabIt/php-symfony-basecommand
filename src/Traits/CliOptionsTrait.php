@@ -10,8 +10,7 @@ trait CliOptionsTrait
 {
     /**
      * Can multiple instances of this command run in parallel?
-     * 💡 You shouldn't allow it, unless you explictely design the
-     * command to support it
+     * 💡 You shouldn't allow it unless you explicitly design the command to support it
      */
     protected bool $allowParallelExec = false;
 
@@ -23,10 +22,20 @@ trait CliOptionsTrait
 
     /**
      * Does this command accept `--CLI_OPT_BLOCK_MESSAGES`?
-     * 💡 It's highly recommended if this commands sends
-     * emails or messages!
+     * 💡 It's highly recommended if this commands sends emails or messages
      */
     protected bool $allowBlockMessagesOpt = false;
+
+    /**
+     * Does this command accept `--CLI_OPT_SEND_MESSAGES`?
+     * 💡 It's highly recommended if this commands sends emails or messages
+     */
+    protected bool $allowSendMessagesOpt = false;
+
+    /**
+     * Does --CLI_OPT_DRY_RUN` blocks messages too?
+     */
+    protected bool $dryRunBlocksMessages = true;
 
     /**
      * Does this command accept `--CLI_OPT_SINGLE_ID=<id>`?
@@ -36,7 +45,7 @@ trait CliOptionsTrait
 
     /**
      * Allow the app to run with local, cached data, without any download?
-     * 💡 If the app downloads data, you should enable it.
+     * 💡 If the app downloads data, you should enable it
      */
     protected bool $allowNoDownloadOpt = false;
 
@@ -49,21 +58,6 @@ trait CliOptionsTrait
      * Is the `--CLI_OPT_LANGUAGE=<ln>` mandatory?
      */
     protected bool $langOptIsMandatory = false;
-
-    /**
-     * Should the application work in a restricted mode or
-     * on a limited dataset by default and unlock the full
-     * mode only if the `--CLI_OPT_UNLOCK` is provided?
-     * 💡 This is reccomended for commands designed to
-     * send newsletters or deliver messages to the users
-     */
-    protected bool $limitedByDefaultOpt = false;
-
-    /**
-     * Should the unlimited mode by `--CLI_OPT_UNLOCK`
-     * be allowed on a limited set of enviornments only?
-     */
-    protected ?array $allowUnlockOptIn = ["prod"];
 
 
     protected function configure() : void
@@ -78,20 +72,20 @@ trait CliOptionsTrait
             $this->addOption(Options::CLI_OPT_BLOCK_MESSAGES, null, InputOption::VALUE_NONE, 'Don\t send any emails or messages');
         }
 
+        if( $this->allowSendMessagesOpt ) {
+            $this->addOption(Options::CLI_OPT_SEND_MESSAGES, null, InputOption::VALUE_NONE, 'Actually send emails and messages');
+        }
+
         if( $this->allowIdOpt ) {
-            $this->addOption(Options::CLI_OPT_SINGLE_ID, null, InputOption::VALUE_REQUIRED, 'Process the item identified by this specific ID only');
+            $this->addOption(Options::CLI_OPT_SINGLE_ID, null, InputOption::VALUE_REQUIRED, 'Process the item identified by this ID only');
         }
 
         if( $this->allowNoDownloadOpt ) {
-            $this->addOption(Options::CLI_OPT_NO_DOWNLOAD, null, InputOption::VALUE_NONE, 'Run with local, cached data, skipping any download');
+            $this->addOption(Options::CLI_OPT_NO_DOWNLOAD, null, InputOption::VALUE_NONE, 'Skip any download and run with local, cached data');
         }
 
         if( $this->allowLangOpt ) {
             $this->addOption(Options::CLI_OPT_LANGUAGE, null, InputOption::VALUE_REQUIRED, 'The language to work on');
-        }
-
-        if( $this->limitedByDefaultOpt ) {
-            $this->addOption(Options::CLI_OPT_UNLOCK, null, InputOption::VALUE_NONE, 'Remove all restrictions');
         }
     }
 
@@ -110,8 +104,7 @@ trait CliOptionsTrait
     }
 
 
-    protected function getCliOption(string $staticCLI_OPT_NAME) : mixed
-        { return $this->input->getOption($staticCLI_OPT_NAME); }
+    protected function getCliOption(string $staticCLI_OPT_NAME) : mixed { return $this->input->getOption($staticCLI_OPT_NAME); }
 
 
     protected function getCliId() : mixed
@@ -139,19 +132,48 @@ trait CliOptionsTrait
         return $isDryRun;
     }
 
-    protected function isNotDryRun(bool $silent = false) : bool
-        { return !$this->isDryRun($silent); }
+
+    protected function isNotDryRun(bool $silent = false) : bool { return !$this->isDryRun($silent); }
 
 
     protected function isSendingMessageAllowed(bool $silent = false) : bool
     {
-        $isMessagingBlocked = $this->getCliOption(Options::CLI_OPT_BLOCK_MESSAGES);
-
-        if( $isMessagingBlocked && !$silent ) {
-            $this->fxWarning("🦘 Skipped due to --" . Options::CLI_OPT_BLOCK_MESSAGES);
+        if( !$this->allowBlockMessagesOpt && !$this->allowSendMessagesOpt ) {
+            return true;
         }
 
-        return !$isMessagingBlocked;
+        if( $this->dryRunBlocksMessages && $this->isDryRun(true) ) {
+
+            if( !$silent ) {
+                $this->fxWarning("📧🧪 Messages are blocked due to --" . Options::CLI_OPT_DRY_RUN);
+            }
+
+            return false;
+        }
+
+        if( $this->allowBlockMessagesOpt && $this->getCliOption(Options::CLI_OPT_BLOCK_MESSAGES) ) {
+
+            if( !$silent ) {
+                $this->fxOK("📧🚧 Messages are blocked due to --" . Options::CLI_OPT_BLOCK_MESSAGES);
+            }
+
+            return false;
+        }
+
+        if( $this->allowSendMessagesOpt && !$this->getCliOption(Options::CLI_OPT_SEND_MESSAGES) ) {
+
+            if( !$silent ) {
+                $this->fxWarning("📧🚧 Messages are blocked due to missing --" . Options::CLI_OPT_SEND_MESSAGES);
+            }
+
+            return false;
+        }
+
+        if( !$silent ) {
+            $this->fxWarning("📧🔥 Messages are HOT for delivery!");
+        }
+
+        return true;
     }
 
 
@@ -162,11 +184,13 @@ trait CliOptionsTrait
         }
 
         $idOpt = $this->getCliOption(Options::CLI_OPT_SINGLE_ID);
+
         if( $idOpt === null ) {
             return false;
         }
 
         $this->fxWarning("--" . Options::CLI_OPT_SINGLE_ID . "=##$idOpt## is set!");
+
         return true;
     }
 
@@ -211,37 +235,4 @@ trait CliOptionsTrait
 
         return !$isDownloadBlocked;
     }
-
-
-    protected function isLimited(bool $silent = false) : bool
-    {
-        if( !$this->limitedByDefaultOpt ) {
-            return false;
-        }
-
-        $isLimited = !$this->getCliOption(Options::CLI_OPT_UNLOCK);
-
-        if(
-            !$isLimited && !empty($this->allowUnlockOptIn) &&
-            !in_array($this->getEnv(), $this->allowUnlockOptIn)
-        ) {
-            $fullMessage =
-                "Can't use --" . Options::CLI_OPT_UNLOCK . " in " . $this->getEnv() . " env, only in " .
-                implode(', ', $this->allowUnlockOptIn);
-            
-            throw new RuntimeException($fullMessage);
-        }
-
-        if( $isLimited && !$silent ) {
-            $this->fxWarning("🧪 Limited mode is engaged. Remove it with --" . Options::CLI_OPT_UNLOCK);
-        }
-        
-        if( !$isLimited && !$silent ) {
-            $this->fxWarning("⚠ Unlimited mode is engaged via --" . Options::CLI_OPT_UNLOCK);
-        }
-
-        return $isLimited;
-    }
-
-    protected function isUnlocked(bool $silent = false) : bool { return !$this->isLimited($silent); }
 }

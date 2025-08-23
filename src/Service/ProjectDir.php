@@ -6,8 +6,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class ProjectDir
 {
-    public function __construct(protected ContainerBagInterface $parameterBag)
-    {}
+    public function __construct(protected ContainerBagInterface $parameterBag) {}
 
 
     //<editor-fold defaultstate="collapsed" desc="*** PROJECT DIR ***">

@@ -117,6 +117,8 @@ class Mailer
             $headers->remove($header);
             $headers->addTextHeader($header, $value);
         }
+
+        return $this;
     }
 
 

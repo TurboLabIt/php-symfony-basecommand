@@ -28,14 +28,9 @@ class Mailer
 
     public function init() : static
     {
-        $this->email    = new TemplatedEmail();
+        $this->email = new TemplatedEmail();
 
-        $senderName     = $this->arrConfig["from"]["name"] ?? null;
-        $senderAddress  = $this->arrConfig["from"]["address"] ?? null;
-
-        if( !empty($senderAddress) ) {
-            $this->email->from( new Address($senderAddress, $senderName) );
-        }
+        $this->setFrom();
 
         $toName     = $this->arrConfig["to"]["name"] ?? null;
         $toAddress  = $this->arrConfig["to"]["address"] ?? null;
@@ -74,16 +69,10 @@ class Mailer
             $this->addRecipients($to, 'to');
         }
 
+        $this->addDisableAutoreplyHeaders();
+
         $subject = $this->buildSubject($subjectUnprefixed);
         $this->email->subject($subject);
-
-        //
-        if( $this->disableAutoReply ) {
-
-            $headers = $this->email->getHeaders();
-            $headers->remove('X-Auto-Response-Suppress');
-            $headers->addTextHeader('X-Auto-Response-Suppress', 'OOF, DR, RN, NRN, AutoReply');
-        }
 
         $arrTemplateParams = [
             "From"      => $this->email->getFrom()[0] ?? null,
@@ -107,6 +96,27 @@ class Mailer
             ->context( array_merge($arrTemplateData, $arrTemplateParams) );
 
         return $this;
+    }
+
+
+    protected function addDisableAutoreplyHeaders() : static
+    {
+        if( !$this->disableAutoReply ) {
+            return $this;
+        }
+
+        $headers = $this->email->getHeaders();
+
+        $arrDisableAutoreplyHeaders = [
+            'X-Auto-Response-Suppress'  => 'OOF, DR, RN, NRN, AutoReply',
+            'Auto-Submitted'            => 'auto-generated'
+        ];
+
+        foreach($arrDisableAutoreplyHeaders as $header => $value) {
+
+            $headers->remove($header);
+            $headers->addTextHeader($header, $value);
+        }
     }
 
 
@@ -140,7 +150,27 @@ class Mailer
     }
 
 
+    public function setFrom(?string $senderAddress = null, ?string $senderName = null) : static
+    {
+        if( empty($senderName) ) {
+            $senderName = $this->arrConfig["from"]["name"] ?? null;
+        }
+
+        if( empty($senderAddress) ) {
+            $senderAddress = $this->arrConfig["from"]["address"] ?? null;
+        }
+
+        if( !empty($senderAddress) ) {
+            $this->email->from( new Address($senderAddress, $senderName) );
+        }
+
+        return $this;
+    }
+
+
     public function addTo(null|string|array $recipients) : static { return $this->addRecipients($recipients, 'to'); }
+
+    public function addCc(null|string|array $recipients) : static { return $this->addRecipients($recipients, 'cc'); }
 
     public function addBcc(null|string|array $recipients) : static { return $this->addRecipients($recipients, 'bcc'); }
 

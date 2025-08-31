@@ -193,10 +193,31 @@ class Mailer
                 continue;
             }
 
+            if( is_object($item) && method_exists($item, 'getUsername') && method_exists($item, 'getEmail') ) {
+
+                $item = [
+                    'name'      => $item->getUsername(),
+                    'address'   => $item->getEmail()
+                ];
+
+            } elseif( is_object($item) && method_exists($item, 'getEmail') ) {
+
+                $item = $item->getEmail();
+
+            } elseif( is_object($item) ) {
+
+                throw new \InvalidArgumentException(
+                    "Invalid recipients element. Each item must be ['name', 'email'] or implement getUsername()+getEmail(). " .
+                    get_class($item) . " doesn't"
+                );
+            }
+
+
             if( is_array($item) ) {
 
-                $toName     = $item["name"] ?? null;
-                $toAddress  = $item["address"] ?? null;
+                $toName     = $item["name"] ?? '';
+                $toName     = trim($toName);
+                $toAddress  = $item["address"] ?? '';
                 $toAddress  = trim($toAddress);
 
                 if( empty($toAddress) ) {

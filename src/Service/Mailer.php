@@ -76,8 +76,8 @@ class Mailer
 
         $arrTemplateParams = [
             "From"      => $this->email->getFrom()[0] ?? null,
-            "To"        => $this->email->getTo(),
-            "ToFirst"   => $this->email->getTo()[0] ?? null,
+            "To"        => $this->getTo(),
+            "ToFirst"   => $this->getTo()[0] ?? null,
             "date"      => date('Y-m-d H:i:s'),
         ];
 
@@ -172,7 +172,11 @@ class Mailer
 
     public function addTo(null|string|array $recipients) : static { return $this->addRecipients($recipients, 'to'); }
 
+    public function getTo() : array { return $this->email->getTo(); }
+
     public function addCc(null|string|array $recipients) : static { return $this->addRecipients($recipients, 'cc'); }
+
+    public function getCc() : array { return $this->email->getCc(); }
 
     public function addBcc(null|string|array $recipients) : static { return $this->addRecipients($recipients, 'bcc'); }
 
@@ -326,9 +330,20 @@ class Mailer
     }
 
 
+    public function sendIfHasToRecipients() : bool
+    {
+        if( empty($this->getTo()) ) {
+            return false;
+        }
+
+        $this->send();
+        return true;
+    }
+
+
     public function send() : void
     {
-        $arrRecipients = $this->email->getTo();
+        $arrRecipients = $this->getTo();
 
         if( $this->isBlocked ) {
 

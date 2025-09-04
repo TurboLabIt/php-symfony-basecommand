@@ -8,19 +8,44 @@ use TurboLabIt\BaseCommand\Service\DateMagician;
 
 trait SpreadsheetTrait
 {
-    protected function saveDataAsSpreadsheet(array $arrData, string $sheetName = 'Data', ?array $arrDataFormat = [], ?string $varFilePath = 'report/data.xlsx') : string
+    protected function saveDataAsSpreadsheet(array $arrData, bool $useKeysAsHeader = true, string $sheetName = 'Data', ?array $arrDataFormat = [], ?string $varFilePath = 'report/data.xlsx') : string
     {
-        $spreadsheet = $this->buildSpreadsheet($arrData, $sheetName, $arrDataFormat);
-        return $this->saveSpreadsheet($spreadsheet, $varFilePath);
+        $spreadsheet = $this->buildSpreadsheet($arrData, $useKeysAsHeader, $sheetName, $arrDataFormat);
+        return $this->saveSpreadsheetToFile($spreadsheet, $varFilePath);
     }
 
 
-    protected function buildSpreadsheet(array $arrData, string $sheetName = 'Data', ?array $arrDataFormat = []) : Spreadsheet
+    protected function buildSpreadsheet(array $arrData, $useKeysAsHeader, string $sheetName = 'Data', ?array $arrDataFormat = []) : Spreadsheet
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle($sheetName);
+
+        if($useKeysAsHeader) {
+            $arrHeader = array_keys(reset($arrData));
+        }
+
+        if( !empty($arrHeader) ) {
+            $arrData = array_replace(['header' => $arrHeader], $arrData);
+        }
+
         $sheet->fromArray($arrData);
+
+        if($useKeysAsHeader) {
+
+            $sheet->freezePane('A2');
+
+            $highestColumn = $sheet->getHighestColumn();
+            $headerRange   = "A1:{$highestColumn}1";
+
+            $sheet->getStyle($headerRange)->getFont()->setBold(true);
+            $sheet->getStyle($headerRange)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FFD9D9D9'); // light grey
+
+            $highestRow = $sheet->getHighestRow();
+            $sheet->setAutoFilter("A1:{$highestColumn}{$highestRow}");
+        }
 
         // autosize
         foreach($sheet->getColumnIterator() as $column) {

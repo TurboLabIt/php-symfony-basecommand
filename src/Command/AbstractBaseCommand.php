@@ -15,6 +15,7 @@ use TurboLabIt\BaseCommand\Traits\ProjectDirDirectTrait;
 use TurboLabIt\BaseCommand\Traits\CliOptionsTrait;
 use TurboLabIt\BaseCommand\Traits\CliArgumentsTrait;
 use TurboLabIt\BaseCommand\Traits\HeaderFooterTrait;
+use TurboLabIt\BaseCommand\Traits\SpreadsheetTrait;
 use TurboLabIt\BaseCommand\Traits\TempWorkDirTrait;
 use TurboLabIt\BaseCommand\Traits\CsvHandlerTrait;
 use Symfony\Component\Console\Command\LockableTrait;
@@ -31,17 +32,8 @@ abstract class AbstractBaseCommand extends Command
 {
     const WARNING = 9;
 
-    use BashFxDirectTrait;
-    use ProjectDirDirectTrait;
-    use CliOptionsTrait;
-    use CliArgumentsTrait;
-    use HeaderFooterTrait;
-    use TempWorkDirTrait;
-    use CsvHandlerTrait;
-    use LockableTrait;
-    use IteratorTrait;
-    use ParsingTrait;
-    use EnvTrait;
+    use BashFxDirectTrait, ProjectDirDirectTrait, CliOptionsTrait, CliArgumentsTrait, HeaderFooterTrait, TempWorkDirTrait,
+    CsvHandlerTrait, LockableTrait, IteratorTrait, ParsingTrait, EnvTrait, SpreadsheetTrait;
 
     protected DateMagician $dateMagician;
 

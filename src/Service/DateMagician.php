@@ -21,6 +21,9 @@ class DateMagician
     // September
     const INTL_FORMAT_MONTH             = 'MMMM';
 
+    // 2025-09-04 10:44
+    const INTL_FORMAT_YEAR_MONTH_TIME   = 'yyyy-mm-dd hh:mm';
+
 
     public static string $locale    = 'it_IT';
     public static string $timeZone  = 'Europe/Rome';

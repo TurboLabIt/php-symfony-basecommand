@@ -25,7 +25,7 @@ trait EnvTrait
     public function getEnv() : string
     {
         if( $this instanceof AbstractController ) {
-            $this->getParameter("kernel.environment");
+            return $this->getParameter("kernel.environment");
         }
 
         if( empty($this->parameters) ) {

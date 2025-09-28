@@ -15,12 +15,20 @@ class ItemStringify
 
     public function buildItemName($item) : string
     {
-        $txtName = '';
+        if( is_string($item) ) {
 
-        if( is_object($item) ) {
+            $txtName = $item;
+
+        } elseif( is_object($item) && method_exists($item, '__toString') ) {
+
+            $txtName = $item->__toString();
+
+        } elseif( is_object($item) ) {
 
             foreach(['getName', 'getTitle', 'getValue', 'getLabel'] as $method) {
+
                 if( method_exists($item, $method) ) {
+
                     $txtName = $item->$method();
                     break;
                 }
@@ -28,19 +36,29 @@ class ItemStringify
 
         } elseif( is_array($item) ) {
 
-            foreach(['name', 'Name', 'title', 'Title', 'value', 'Value', 'label', 'Label'] as $key) {
+            foreach(['name', 'title', 'value', 'label'] as $key) {
+
                 if( !empty($item[$key]) ) {
+
                     $txtName = $item[$key];
+                    break;
+                }
+
+                $ucKey = ucfirst($key);
+                if( !empty($item[$ucKey]) ) {
+
+                    $txtName = $item[$ucKey];
                     break;
                 }
             }
 
         } else {
 
-            $txtName = $item;
+            $txtName = '';
         }
 
-        return trim($txtName);
+        $cleanText = html_entity_decode($txtName, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        return trim($cleanText);
     }
 
 

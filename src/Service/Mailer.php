@@ -316,11 +316,11 @@ class Mailer
 
         */
 
-        return $this->switchTransport('localsmtp');
+        return $this->switchTransportOnce('localsmtp');
     }
 
 
-    public function switchTransport(string $transportName) : static
+    public function switchTransportOnce(string $transportName) : static
     {
         // 📚 https://symfony.com/doc/current/mailer.html#multiple-email-transports
         $headers = $this->email->getHeaders();

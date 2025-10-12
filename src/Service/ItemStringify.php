@@ -15,6 +15,8 @@ class ItemStringify
 
     public function buildItemName($item) : string
     {
+        $txtName = '';
+
         if( is_string($item) ) {
 
             $txtName = $item;
@@ -51,10 +53,6 @@ class ItemStringify
                     break;
                 }
             }
-
-        } else {
-
-            $txtName = '';
         }
 
         $cleanText = html_entity_decode($txtName, ENT_QUOTES | ENT_HTML5, 'UTF-8');

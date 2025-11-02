@@ -1,6 +1,7 @@
 <?php
 namespace TurboLabIt\BaseCommand\Traits;
 
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Helper\ProgressBar;
 use TurboLabIt\BaseCommand\Service\ItemStringify;
 
@@ -62,7 +63,7 @@ trait IteratorTrait
         foreach($items as $key => $item) {
 
             $title = $fxGenerateItemTitle($key, $item);
-            $progressBar->setMessage($title);
+            $progressBar->setMessage( OutputFormatter::escape($title) );
             $progressBar->advance();
 
             if( $this->iteratorAutoSkip && $fxAutoSkipLogic($key, $item) ) {

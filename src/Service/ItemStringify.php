@@ -70,6 +70,10 @@ class ItemStringify
 
         $txtTitle .= $this->buildItemName($item);
 
+        if( mb_strlen($txtTitle) > 60 ) {
+            $txtTitle = mb_substr($txtTitle, 0, 60) . '...';
+        }
+
         return trim($txtTitle);
     }
 

@@ -1,6 +1,9 @@
 <?php
 namespace TurboLabIt\BaseCommand\Service;
 
+use DateTime;
+use DateTimeZone;
+
 
 class DateMagician
 {
@@ -29,7 +32,7 @@ class DateMagician
     public static string $timeZone  = 'Europe/Rome';
 
 
-    public function buildDateTimeFromISO8601(?string $dateTime) : ?\DateTime
+    public function buildDateTimeFromISO8601(?string $dateTime) : ?DateTime
     {
         // input example: 2023-08-14T15:56:55Z
         // timezone is UTC
@@ -41,29 +44,29 @@ class DateMagician
         // workaround for input without the trailing "Z"
         $dateTime .= str_ends_with($dateTime, 'Z') ? '' : 'Z';
 
-        $tzUTC  = new \DateTimeZone('UTC');
-        $oDate  = \DateTime::createFromFormat('Y-m-d\TH:i:sp', $dateTime,  $tzUTC);
+        $tzUTC  = new DateTimeZone('UTC');
+        $oDate  = DateTime::createFromFormat('Y-m-d\TH:i:sp', $dateTime,  $tzUTC);
 
         if( empty($oDate) ) {
             return null;
         }
 
         // timezone conversion: from UTC to local
-        $tzDefault = new \DateTimeZone(static::$timeZone);
+        $tzDefault = new DateTimeZone(static::$timeZone);
         $oDate->setTimezone($tzDefault);
 
         return $oDate;
     }
 
 
-    public function buildDateFromDDMMYYYY(?string $date) : ?\DateTime
+    public function buildDateFromDDMMYYYY(?string $date) : ?DateTime
     {
         // input example: 23/01/1982
         if( empty($date) ) {
             return null;
         }
 
-        $oDate = \DateTime::createFromFormat('d/m/Y', $date);
+        $oDate = DateTime::createFromFormat('d/m/Y', $date);
 
         if( empty($oDate) ) {
             return null;
@@ -75,7 +78,7 @@ class DateMagician
     }
 
 
-    public function intlFormat(\DateTime $dateTime, string $icuFormat) : string
+    public function intlFormat(DateTime $dateTime, string $icuFormat) : string
     {
         $timezone = $dateTime->getTimeZone()->getName();
 
@@ -83,8 +86,24 @@ class DateMagician
             new \IntlDateFormatter(static::$locale, \IntlDateFormatter::FULL,\IntlDateFormatter::FULL,
                 $timezone, \IntlDateFormatter::GREGORIAN, $icuFormat);
 
-        $txtDate = $dateFormatter->format($dateTime);
+        return $dateFormatter->format($dateTime);
+    }
 
-        return $txtDate;
+
+    public function isHoliday(DateTime $date) : bool
+    {
+        $easter = DateTime::createFromFormat('U', easter_date($date->format('Y')));
+        $easter->setTimezone(new DateTimeZone('Europe/Rome'));
+        $easterMonday = (clone $easter)->modify('next monday');
+
+        return
+            in_array($date->format('m-d'), [
+                '01-01', '01-06',
+                $easter->format('m-d'), $easterMonday->format('m-d'),
+                '04-25', '05-01', '06-02',
+                '08-15',
+                '11-01',
+                '12-08', '12-25', '12-26'
+            ]);
     }
 }

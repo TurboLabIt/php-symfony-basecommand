@@ -85,13 +85,8 @@ class Mailer
         ];
 
         /**
-         * 💡 siteUrl is not needed!
-         * .env: APP_SITE_DOMAIN=www.example.com
-         * services.yaml:
-         *   parameters:
-         *     ## Make the domain and site URL available to CLI Commands
-         *     router.request_context.host: '%env(APP_SITE_DOMAIN)%'
-         *     router.request_context.scheme: 'https'
+         * 💡 To generate the URLs, make sure DEFAULT_URI is set in .env:
+         *      DEFAULT_URI=www.example.com
          */
 
         $this->email

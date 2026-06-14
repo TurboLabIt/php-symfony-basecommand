@@ -7,6 +7,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use TurboLabIt\Traits\SymfonyEnvTrait;
 
 
 class Mailer
@@ -17,6 +18,8 @@ class Mailer
     protected bool $disableAutoReply    = true;
     protected bool $isBlocked           = true;
     protected array $arrReport          = [];
+
+    use SymfonyEnvTrait;
 
 
     public function __construct(
@@ -137,18 +140,6 @@ class Mailer
         $fullSubject = html_entity_decode($fullSubject, ENT_QUOTES, 'UTF-8');
 
         return $fullSubject;
-    }
-
-
-    protected function getEnvTag(bool $includeProd = false) : string
-    {
-        $env = $this->parameters->get("kernel.environment");
-
-        if( $env == 'prod' && !$includeProd ) {
-            return '';
-        }
-
-        return "[" . strtoupper($env) . "] ";
     }
 
 

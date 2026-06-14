@@ -4,10 +4,14 @@ namespace TurboLabIt\BaseCommand\Traits;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use TurboLabIt\BaseCommand\Service\DateMagician;
+use TurboLabIt\Traits\SymfonyEnvTrait;
 
 
 trait SpreadsheetTrait
 {
+    use SymfonyEnvTrait;
+
+
     protected function saveDataAsSpreadsheet(array $arrData, bool $useKeysAsHeader = true, string $sheetName = 'Data', ?array $arrDataFormat = [], ?string $varFilePath = 'report/data.xlsx') : string
     {
         $spreadsheet = $this->buildSpreadsheet($arrData, $useKeysAsHeader, $sheetName, $arrDataFormat);
